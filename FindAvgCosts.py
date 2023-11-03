@@ -21,7 +21,7 @@ for borough in os.listdir(root_directory):
                 reader = csv.DictReader(file)
                 sale_prices = [int(row['Sale Price']) for row in reader if row['Sale Price'].strip()]
                 if sale_prices:
-                    average_price = round(sum(sale_prices) / len(sale_prices), 2)
+                    average_price = "{:.2f}".format(round(sum(sale_prices) / len(sale_prices), 2))
                     result_dict[borough][year] = average_price
 
 with open('average_sale_prices.json', 'w') as json_file:
