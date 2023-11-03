@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<style>
+  .map-layer {
+    fill: #fff;
+    stroke: #aaa;
+  }
+</style>
+<body>
+  <svg></svg>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script>
+    //MAP DRAWING AND MOUSE OVER FUNCTIONS
+    var width = 1200,
+      height =700;
+
+    var colorMap = {
+      Bronx: "#ADD8E6", // Light Blue
+      Brooklyn: "#4169E1", // Royal Blue
+      Manhattan: "#00BFFF", // Deep Sky Blue
+      Queens: "#1E90FF", // Dodger Blue
+      "Staten Island": "#6495ED", // Cornflower Blue
+    };
+
+    var projection = d3.geo
+      .mercator()
+      .scale(45000)
+      .center([-73.935242, 40.73061])
+      .translate([width / 2, height / 2]);
+
+    var path = d3.geo.path().projection(projection);
+
+    var svg = d3.select("svg").attr("width", width).attr("height", height);
+
+    var g = svg.append("g");
+
+    var mapLayer = g.append("g").classed("map-layer", true);
+
+    d3.json("nyc.geojson", function (error, mapData) {
+      var features = mapData.features;
+
+      mapLayer
+        .selectAll("path")
+        .data(features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .style("fill", function (d) {
+          return colorMap[d.properties.boro_name];
+        })
+        .on("mouseover", mouseover)
+        .on("mouseout", mouseout);
+    });
+
+    function mouseover(d) {
+      // Highlight hovered borough with orange
+      d3.select(this).style("fill", "rgba(255, 165, 0, 0.3)");
+      bigText
+        .text(d.properties.boro_name)
+        .attr("font-size", "42px")
+        .style("font-family", "Arial");
+    }
+
+    // reset borough color and text
+    function mouseout(d) {
+      d3.select(this).style("fill", function (d) {
+        return colorMap[d.properties.boro_name];
+      });
+      bigText.text("");
+    }
+
+    var bigText = g.append("text").attr("x", 20).attr("y", 45);
+
+    //MAP DRAWING END
+
+    //CREATIMG HOUSING COST AVERAGES FOR BOROUGH
+
+    fetch("NYCHousingCostData.json")
+      .then((response) => response.json())
+      .then((data) => {
+        // where yearly averages are stored
+        let averagesByYear = {};
+
+        data.forEach((entry) => {
+          const monthYear = entry["Month Year"];
+          const year = monthYear.split(" ")[1];
+
+          const avg1Bedroom = entry["1-Bedroom"];
+          const avg2Bedroom = entry["2-Bedroom"];
+          const avg3Bedroom = entry["3-Bedroom"];
+          const avg4Bedroom = entry["4-Bedroom"];
+
+          // calc avg for each mon year
+          const average =
+            (avg1Bedroom + avg2Bedroom + avg3Bedroom + avg4Bedroom) / 4;
+
+          // calc avg for each year
+          if (!averagesByYear[year]) {
+            averagesByYear[year] = {
+              year: year,
+              averages: [],
+            };
+          }
+
+          averagesByYear[year].averages.push(average);
+        });
+
+        // AVG COST FOR EACH YEAR STORED IN THIS DICT
+        const yearlyAveragesDict = {};
+
+        for (const yearData of Object.values(averagesByYear)) {
+          const year = yearData.year;
+          const yearlyAverages =
+            yearData.averages.reduce((acc, val) => acc + val, 0) /
+            yearData.averages.length;
+          yearlyAveragesDict[year] = yearlyAverages.toFixed(2);
+        }
+
+        console.log(yearlyAveragesDict);
+      });
+
+    //END HOUSING COST AVERAGES FOR BOROUGH
+  </script>
+</body>

@@ -1,0 +1,835 @@
+[
+ {
+   "Month Year": "Dec 13",
+   "1-Bedroom": 2895,
+   "2-Bedroom": 3500,
+   "3-Bedroom": 4600,
+   "4-Bedroom": 5995
+ },
+ {
+   "Month Year": "Jan 14",
+   "1-Bedroom": 2847,
+   "2-Bedroom": 3433,
+   "3-Bedroom": 4400,
+   "4-Bedroom": 5828
+ },
+ {
+   "Month Year": "Feb 14",
+   "1-Bedroom": 2815,
+   "2-Bedroom": 3400,
+   "3-Bedroom": 4333,
+   "4-Bedroom": 5673
+ },
+ {
+   "Month Year": "Mar 14",
+   "1-Bedroom": 2800,
+   "2-Bedroom": 3367,
+   "3-Bedroom": 4250,
+   "4-Bedroom": 5508
+ },
+ {
+   "Month Year": "Apr 14",
+   "1-Bedroom": 2840,
+   "2-Bedroom": 3417,
+   "3-Bedroom": 4383,
+   "4-Bedroom": 5633
+ },
+ {
+   "Month Year": "May 14",
+   "1-Bedroom": 2850,
+   "2-Bedroom": 3433,
+   "3-Bedroom": 4467,
+   "4-Bedroom": 5782
+ },
+ {
+   "Month Year": "Jun 14",
+   "1-Bedroom": 2798,
+   "2-Bedroom": 3367,
+   "3-Bedroom": 4348,
+   "4-Bedroom": 5617
+ },
+ {
+   "Month Year": "Jul 14",
+   "1-Bedroom": 2758,
+   "2-Bedroom": 3317,
+   "3-Bedroom": 4248,
+   "4-Bedroom": 5492
+ },
+ {
+   "Month Year": "Aug 14",
+   "1-Bedroom": 2732,
+   "2-Bedroom": 3279,
+   "3-Bedroom": 4163,
+   "4-Bedroom": 5333
+ },
+ {
+   "Month Year": "Sep 14",
+   "1-Bedroom": 2733,
+   "2-Bedroom": 3296,
+   "3-Bedroom": 4198,
+   "4-Bedroom": 5333
+ },
+ {
+   "Month Year": "Oct 14",
+   "1-Bedroom": 2715,
+   "2-Bedroom": 3263,
+   "3-Bedroom": 4125,
+   "4-Bedroom": 5167
+ },
+ {
+   "Month Year": "Nov 14",
+   "1-Bedroom": 2698,
+   "2-Bedroom": 3215,
+   "3-Bedroom": 3893,
+   "4-Bedroom": 4967
+ },
+ {
+   "Month Year": "Dec 14",
+   "1-Bedroom": 2723,
+   "2-Bedroom": 3225,
+   "3-Bedroom": 3876,
+   "4-Bedroom": 4967
+ },
+ {
+   "Month Year": "Jan 15",
+   "1-Bedroom": 2757,
+   "2-Bedroom": 3258,
+   "3-Bedroom": 3882,
+   "4-Bedroom": 5000
+ },
+ {
+   "Month Year": "Feb 15",
+   "1-Bedroom": 2774,
+   "2-Bedroom": 3260,
+   "3-Bedroom": 3898,
+   "4-Bedroom": 5033
+ },
+ {
+   "Month Year": "Mar 15",
+   "1-Bedroom": 2799,
+   "2-Bedroom": 3267,
+   "3-Bedroom": 3907,
+   "4-Bedroom": 5033
+ },
+ {
+   "Month Year": "Apr 15",
+   "1-Bedroom": 2817,
+   "2-Bedroom": 3265,
+   "3-Bedroom": 3808,
+   "4-Bedroom": 4966
+ },
+ {
+   "Month Year": "May 15",
+   "1-Bedroom": 2867,
+   "2-Bedroom": 3332,
+   "3-Bedroom": 3890,
+   "4-Bedroom": 5131
+ },
+ {
+   "Month Year": "Jun 15",
+   "1-Bedroom": 2883,
+   "2-Bedroom": 3363,
+   "3-Bedroom": 3882,
+   "4-Bedroom": 5281
+ },
+ {
+   "Month Year": "Jul 15",
+   "1-Bedroom": 2898,
+   "2-Bedroom": 3365,
+   "3-Bedroom": 3948,
+   "4-Bedroom": 5315
+ },
+ {
+   "Month Year": "Aug 15",
+   "1-Bedroom": 2882,
+   "2-Bedroom": 3332,
+   "3-Bedroom": 3982,
+   "4-Bedroom": 5217
+ },
+ {
+   "Month Year": "Sep 15",
+   "1-Bedroom": 2898,
+   "2-Bedroom": 3315,
+   "3-Bedroom": 4030,
+   "4-Bedroom": 5133
+ },
+ {
+   "Month Year": "Oct 15",
+   "1-Bedroom": 2875,
+   "2-Bedroom": 3282,
+   "3-Bedroom": 4028,
+   "4-Bedroom": 5067
+ },
+ {
+   "Month Year": "Nov 15",
+   "1-Bedroom": 2858,
+   "2-Bedroom": 3248,
+   "3-Bedroom": 3946,
+   "4-Bedroom": 4958
+ },
+ {
+   "Month Year": "Dec 15",
+   "1-Bedroom": 2838,
+   "2-Bedroom": 3200,
+   "3-Bedroom": 3898,
+   "4-Bedroom": 4891
+ },
+ {
+   "Month Year": "Jan 16",
+   "1-Bedroom": 2881,
+   "2-Bedroom": 3275,
+   "3-Bedroom": 4094,
+   "4-Bedroom": 5258
+ },
+ {
+   "Month Year": "Feb 16",
+   "1-Bedroom": 2948,
+   "2-Bedroom": 3373,
+   "3-Bedroom": 4311,
+   "4-Bedroom": 5633
+ },
+ {
+   "Month Year": "Mar 16",
+   "1-Bedroom": 2985,
+   "2-Bedroom": 3457,
+   "3-Bedroom": 4494,
+   "4-Bedroom": 5967
+ },
+ {
+   "Month Year": "Apr 16",
+   "1-Bedroom": 3000,
+   "2-Bedroom": 3480,
+   "3-Bedroom": 4532,
+   "4-Bedroom": 6000
+ },
+ {
+   "Month Year": "May 16",
+   "1-Bedroom": 3000,
+   "2-Bedroom": 3480,
+   "3-Bedroom": 4532,
+   "4-Bedroom": 6000
+ },
+ {
+   "Month Year": "Jun 16",
+   "1-Bedroom": 3016,
+   "2-Bedroom": 3495,
+   "3-Bedroom": 4548,
+   "4-Bedroom": 6000
+ },
+ {
+   "Month Year": "Jul 16",
+   "1-Bedroom": 3016,
+   "2-Bedroom": 3491,
+   "3-Bedroom": 4517,
+   "4-Bedroom": 6000
+ },
+ {
+   "Month Year": "Aug 16",
+   "1-Bedroom": 3015,
+   "2-Bedroom": 3476,
+   "3-Bedroom": 4517,
+   "4-Bedroom": 5998
+ },
+ {
+   "Month Year": "Sep 16",
+   "1-Bedroom": 2995,
+   "2-Bedroom": 3476,
+   "3-Bedroom": 4467,
+   "4-Bedroom": 5932
+ },
+ {
+   "Month Year": "Oct 16",
+   "1-Bedroom": 2960,
+   "2-Bedroom": 3432,
+   "3-Bedroom": 4367,
+   "4-Bedroom": 5797
+ },
+ {
+   "Month Year": "Nov 16",
+   "1-Bedroom": 2924,
+   "2-Bedroom": 3407,
+   "3-Bedroom": 4267,
+   "4-Bedroom": 5598
+ },
+ {
+   "Month Year": "Dec 16",
+   "1-Bedroom": 2892,
+   "2-Bedroom": 3373,
+   "3-Bedroom": 4200,
+   "4-Bedroom": 5498
+ },
+ {
+   "Month Year": "Jan 17",
+   "1-Bedroom": 2894,
+   "2-Bedroom": 3395,
+   "3-Bedroom": 4242,
+   "4-Bedroom": 5558
+ },
+ {
+   "Month Year": "Feb 17",
+   "1-Bedroom": 2923,
+   "2-Bedroom": 3437,
+   "3-Bedroom": 4342,
+   "4-Bedroom": 5725
+ },
+ {
+   "Month Year": "Mar 17",
+   "1-Bedroom": 2955,
+   "2-Bedroom": 3472,
+   "3-Bedroom": 4440,
+   "4-Bedroom": 5850
+ },
+ {
+   "Month Year": "Apr 17",
+   "1-Bedroom": 2987,
+   "2-Bedroom": 3532,
+   "3-Bedroom": 4521,
+   "4-Bedroom": 5923
+ },
+ {
+   "Month Year": "May 17",
+   "1-Bedroom": 2995,
+   "2-Bedroom": 3563,
+   "3-Bedroom": 4555,
+   "4-Bedroom": 5957
+ },
+ {
+   "Month Year": "Jun 17",
+   "1-Bedroom": 3015,
+   "2-Bedroom": 3593,
+   "3-Bedroom": 4588,
+   "4-Bedroom": 5998
+ },
+ {
+   "Month Year": "Jul 17",
+   "1-Bedroom": 3043,
+   "2-Bedroom": 3593,
+   "3-Bedroom": 4631,
+   "4-Bedroom": 6042
+ },
+ {
+   "Month Year": "Aug 17",
+   "1-Bedroom": 3082,
+   "2-Bedroom": 3592,
+   "3-Bedroom": 4631,
+   "4-Bedroom": 6073
+ },
+ {
+   "Month Year": "Sep 17",
+   "1-Bedroom": 3066,
+   "2-Bedroom": 3616,
+   "3-Bedroom": 4682,
+   "4-Bedroom": 6073
+ },
+ {
+   "Month Year": "Oct 17",
+   "1-Bedroom": 3031,
+   "2-Bedroom": 3609,
+   "3-Bedroom": 4648,
+   "4-Bedroom": 5998
+ },
+ {
+   "Month Year": "Nov 17",
+   "1-Bedroom": 2947,
+   "2-Bedroom": 3512,
+   "3-Bedroom": 4572,
+   "4-Bedroom": 5933
+ },
+ {
+   "Month Year": "Dec 17",
+   "1-Bedroom": 2940,
+   "2-Bedroom": 3490,
+   "3-Bedroom": 4518,
+   "4-Bedroom": 5877
+ },
+ {
+   "Month Year": "Jan 18",
+   "1-Bedroom": 2946,
+   "2-Bedroom": 3532,
+   "3-Bedroom": 4618,
+   "4-Bedroom": 5897
+ },
+ {
+   "Month Year": "Feb 18",
+   "1-Bedroom": 2989,
+   "2-Bedroom": 3665,
+   "3-Bedroom": 4778,
+   "4-Bedroom": 5930
+ },
+ {
+   "Month Year": "Mar 18",
+   "1-Bedroom": 2995,
+   "2-Bedroom": 3698,
+   "3-Bedroom": 4865,
+   "4-Bedroom": 5985
+ },
+ {
+   "Month Year": "Apr 18",
+   "1-Bedroom": 2997,
+   "2-Bedroom": 3665,
+   "3-Bedroom": 4830,
+   "4-Bedroom": 5999
+ },
+ {
+   "Month Year": "May 18",
+   "1-Bedroom": 3032,
+   "2-Bedroom": 3640,
+   "3-Bedroom": 4812,
+   "4-Bedroom": 6072
+ },
+ {
+   "Month Year": "Jun 18",
+   "1-Bedroom": 3083,
+   "2-Bedroom": 3608,
+   "3-Bedroom": 4787,
+   "4-Bedroom": 6124
+ },
+ {
+   "Month Year": "Jul 18",
+   "1-Bedroom": 3122,
+   "2-Bedroom": 3608,
+   "3-Bedroom": 4773,
+   "4-Bedroom": 6190
+ },
+ {
+   "Month Year": "Aug 18",
+   "1-Bedroom": 3138,
+   "2-Bedroom": 3612,
+   "3-Bedroom": 4758,
+   "4-Bedroom": 6183
+ },
+ {
+   "Month Year": "Sep 18",
+   "1-Bedroom": 3122,
+   "2-Bedroom": 3596,
+   "3-Bedroom": 4704,
+   "4-Bedroom": 6166
+ },
+ {
+   "Month Year": "Oct 18",
+   "1-Bedroom": 3083,
+   "2-Bedroom": 3561,
+   "3-Bedroom": 4620,
+   "4-Bedroom": 6100
+ },
+ {
+   "Month Year": "Nov 18",
+   "1-Bedroom": 3056,
+   "2-Bedroom": 3515,
+   "3-Bedroom": 4567,
+   "4-Bedroom": 6033
+ },
+ {
+   "Month Year": "Dec 18",
+   "1-Bedroom": 3045,
+   "2-Bedroom": 3497,
+   "3-Bedroom": 4530,
+   "4-Bedroom": 6000
+ },
+ {
+   "Month Year": "Jan 19",
+   "1-Bedroom": 3044,
+   "2-Bedroom": 3448,
+   "3-Bedroom": 4460,
+   "4-Bedroom": 5867
+ },
+ {
+   "Month Year": "Feb 19",
+   "1-Bedroom": 2991,
+   "2-Bedroom": 3388,
+   "3-Bedroom": 4347,
+   "4-Bedroom": 5767
+ },
+ {
+   "Month Year": "Mar 19",
+   "1-Bedroom": 3028,
+   "2-Bedroom": 3423,
+   "3-Bedroom": 4353,
+   "4-Bedroom": 5767
+ },
+ {
+   "Month Year": "Apr 19",
+   "1-Bedroom": 3104,
+   "2-Bedroom": 3539,
+   "3-Bedroom": 4490,
+   "4-Bedroom": 5967
+ },
+ {
+   "Month Year": "May 19",
+   "1-Bedroom": 3251,
+   "2-Bedroom": 3765,
+   "3-Bedroom": 4723,
+   "4-Bedroom": 6333
+ },
+ {
+   "Month Year": "Jun 19",
+   "1-Bedroom": 3322,
+   "2-Bedroom": 3897,
+   "3-Bedroom": 4800,
+   "4-Bedroom": 6486
+ },
+ {
+   "Month Year": "Jul 19",
+   "1-Bedroom": 3380,
+   "2-Bedroom": 4013,
+   "3-Bedroom": 4850,
+   "4-Bedroom": 6586
+ },
+ {
+   "Month Year": "Aug 19",
+   "1-Bedroom": 3391,
+   "2-Bedroom": 4048,
+   "3-Bedroom": 4865,
+   "4-Bedroom": 6452
+ },
+ {
+   "Month Year": "Sep 19",
+   "1-Bedroom": 3393,
+   "2-Bedroom": 4148,
+   "3-Bedroom": 4955,
+   "4-Bedroom": 6467
+ },
+ {
+   "Month Year": "Oct 19",
+   "1-Bedroom": 3370,
+   "2-Bedroom": 4197,
+   "3-Bedroom": 5005,
+   "4-Bedroom": 6398
+ },
+ {
+   "Month Year": "Nov 19",
+   "1-Bedroom": 3340,
+   "2-Bedroom": 4195,
+   "3-Bedroom": 5006,
+   "4-Bedroom": 6401
+ },
+ {
+   "Month Year": "Dec 19",
+   "1-Bedroom": 3309,
+   "2-Bedroom": 4095,
+   "3-Bedroom": 4983,
+   "4-Bedroom": 6314
+ },
+ {
+   "Month Year": "Jan 20",
+   "1-Bedroom": 3315,
+   "2-Bedroom": 4043,
+   "3-Bedroom": 4983,
+   "4-Bedroom": 6383
+ },
+ {
+   "Month Year": "Feb 20",
+   "1-Bedroom": 3348,
+   "2-Bedroom": 4043,
+   "3-Bedroom": 4983,
+   "4-Bedroom": 6412
+ },
+ {
+   "Month Year": "Mar 20",
+   "1-Bedroom": 3407,
+   "2-Bedroom": 4143,
+   "3-Bedroom": 5083,
+   "4-Bedroom": 6531
+ },
+ {
+   "Month Year": "Apr 20",
+   "1-Bedroom": 3398,
+   "2-Bedroom": 4128,
+   "3-Bedroom": 5017,
+   "4-Bedroom": 6564
+ },
+ {
+   "Month Year": "May 20",
+   "1-Bedroom": 3339,
+   "2-Bedroom": 4030,
+   "3-Bedroom": 4933,
+   "4-Bedroom": 6564
+ },
+ {
+   "Month Year": "Jun 20",
+   "1-Bedroom": 3204,
+   "2-Bedroom": 3832,
+   "3-Bedroom": 4710,
+   "4-Bedroom": 6448
+ },
+ {
+   "Month Year": "Jul 20",
+   "1-Bedroom": 3063,
+   "2-Bedroom": 3690,
+   "3-Bedroom": 4510,
+   "4-Bedroom": 6082
+ },
+ {
+   "Month Year": "Aug 20",
+   "1-Bedroom": 2923,
+   "2-Bedroom": 3573,
+   "3-Bedroom": 4258,
+   "4-Bedroom": 5750
+ },
+ {
+   "Month Year": "Sep 20",
+   "1-Bedroom": 2800,
+   "2-Bedroom": 3457,
+   "3-Bedroom": 4020,
+   "4-Bedroom": 5446
+ },
+ {
+   "Month Year": "Oct 20",
+   "1-Bedroom": 2693,
+   "2-Bedroom": 3349,
+   "3-Bedroom": 3835,
+   "4-Bedroom": 5279
+ },
+ {
+   "Month Year": "Nov 20",
+   "1-Bedroom": 2610,
+   "2-Bedroom": 3294,
+   "3-Bedroom": 3737,
+   "4-Bedroom": 5046
+ },
+ {
+   "Month Year": "Dec 20",
+   "1-Bedroom": 2575,
+   "2-Bedroom": 3260,
+   "3-Bedroom": 3649,
+   "4-Bedroom": 4833
+ },
+ {
+   "Month Year": "Jan 21",
+   "1-Bedroom": 2565,
+   "2-Bedroom": 3262,
+   "3-Bedroom": 3600,
+   "4-Bedroom": 4705
+ },
+ {
+   "Month Year": "Feb 21",
+   "1-Bedroom": 2603,
+   "2-Bedroom": 3280,
+   "3-Bedroom": 3597,
+   "4-Bedroom": 4722
+ },
+ {
+   "Month Year": "Mar 21",
+   "1-Bedroom": 2638,
+   "2-Bedroom": 3297,
+   "3-Bedroom": 3563,
+   "4-Bedroom": 4684
+ },
+ {
+   "Month Year": "Apr 21",
+   "1-Bedroom": 2709,
+   "2-Bedroom": 3346,
+   "3-Bedroom": 3630,
+   "4-Bedroom": 4779
+ },
+ {
+   "Month Year": "May 21",
+   "1-Bedroom": 2805,
+   "2-Bedroom": 3392,
+   "3-Bedroom": 3732,
+   "4-Bedroom": 4829
+ },
+ {
+   "Month Year": "Jun 21",
+   "1-Bedroom": 2952,
+   "2-Bedroom": 3525,
+   "3-Bedroom": 4032,
+   "4-Bedroom": 5133
+ },
+ {
+   "Month Year": "Jul 21",
+   "1-Bedroom": 2960,
+   "2-Bedroom": 3642,
+   "3-Bedroom": 4265,
+   "4-Bedroom": 5385
+ },
+ {
+   "Month Year": "Aug 21",
+   "1-Bedroom": 3075,
+   "2-Bedroom": 3850,
+   "3-Bedroom": 4500,
+   "4-Bedroom": 5553
+ },
+ {
+   "Month Year": "Sep 21",
+   "1-Bedroom": 3127,
+   "2-Bedroom": 4067,
+   "3-Bedroom": 4525,
+   "4-Bedroom": 5969
+ },
+ {
+   "Month Year": "Oct 21",
+   "1-Bedroom": 3330,
+   "2-Bedroom": 4358,
+   "3-Bedroom": 4719,
+   "4-Bedroom": 6333
+ },
+ {
+   "Month Year": "Nov 21",
+   "1-Bedroom": 3363,
+   "2-Bedroom": 4323,
+   "3-Bedroom": 4652,
+   "4-Bedroom": 6732
+ },
+ {
+   "Month Year": "Dec 21",
+   "1-Bedroom": 3407,
+   "2-Bedroom": 4272,
+   "3-Bedroom": 4893,
+   "4-Bedroom": 6382
+ },
+ {
+   "Month Year": "Jan 22",
+   "1-Bedroom": 3498,
+   "2-Bedroom": 4128,
+   "3-Bedroom": 4853,
+   "4-Bedroom": 6549
+ },
+ {
+   "Month Year": "Feb 22",
+   "1-Bedroom": 3598,
+   "2-Bedroom": 4230,
+   "3-Bedroom": 5103,
+   "4-Bedroom": 6317
+ },
+ {
+   "Month Year": "Mar 22",
+   "1-Bedroom": 3757,
+   "2-Bedroom": 4330,
+   "3-Bedroom": 5019,
+   "4-Bedroom": 6417
+ },
+ {
+   "Month Year": "Apr 22",
+   "1-Bedroom": 3828,
+   "2-Bedroom": 4595,
+   "3-Bedroom": 5232,
+   "4-Bedroom": 6467
+ },
+ {
+   "Month Year": "May 22",
+   "1-Bedroom": 3929,
+   "2-Bedroom": 4827,
+   "3-Bedroom": 5448,
+   "4-Bedroom": 6967
+ },
+ {
+   "Month Year": "Jun 22",
+   "1-Bedroom": 4017,
+   "2-Bedroom": 5064,
+   "3-Bedroom": 5798,
+   "4-Bedroom": 7433
+ },
+ {
+   "Month Year": "Jul 22",
+   "1-Bedroom": 4121,
+   "2-Bedroom": 5151,
+   "3-Bedroom": 6133,
+   "4-Bedroom": 7633
+ },
+ {
+   "Month Year": "Aug 22",
+   "1-Bedroom": 4129,
+   "2-Bedroom": 5219,
+   "3-Bedroom": 6250,
+   "4-Bedroom": 7767
+ },
+ {
+   "Month Year": "Sep 22",
+   "1-Bedroom": 4058,
+   "2-Bedroom": 5283,
+   "3-Bedroom": 6248,
+   "4-Bedroom": 7858
+ },
+ {
+   "Month Year": "Oct 22",
+   "1-Bedroom": 3958,
+   "2-Bedroom": 5300,
+   "3-Bedroom": 6032,
+   "4-Bedroom": 7623
+ },
+ {
+   "Month Year": "Nov 22",
+   "1-Bedroom": 3917,
+   "2-Bedroom": 5365,
+   "3-Bedroom": 5947,
+   "4-Bedroom": 7321
+ },
+ {
+   "Month Year": "Dec 22",
+   "1-Bedroom": 3898,
+   "2-Bedroom": 5397,
+   "3-Bedroom": 5947,
+   "4-Bedroom": 7097
+ },
+ {
+   "Month Year": "Jan 23",
+   "1-Bedroom": 3922,
+   "2-Bedroom": 5555,
+   "3-Bedroom": 5995,
+   "4-Bedroom": 6932
+ },
+ {
+   "Month Year": "Feb 23",
+   "1-Bedroom": 4053,
+   "2-Bedroom": 5690,
+   "3-Bedroom": 6330,
+   "4-Bedroom": 6983
+ },
+ {
+   "Month Year": "Mar 23",
+   "1-Bedroom": 4107,
+   "2-Bedroom": 5792,
+   "3-Bedroom": 6665,
+   "4-Bedroom": 7150
+ },
+ {
+   "Month Year": "Apr 23",
+   "1-Bedroom": 4233,
+   "2-Bedroom": 5800,
+   "3-Bedroom": 7300,
+   "4-Bedroom": 7548
+ },
+ {
+   "Month Year": "May 23",
+   "1-Bedroom": 4218,
+   "2-Bedroom": 5600,
+   "3-Bedroom": 7255,
+   "4-Bedroom": 7830
+ },
+ {
+   "Month Year": "Jun 23",
+   "1-Bedroom": 4258,
+   "2-Bedroom": 5432,
+   "3-Bedroom": 7005,
+   "4-Bedroom": 7995
+ },
+ {
+   "Month Year": "Jul 23",
+   "1-Bedroom": 4187,
+   "2-Bedroom": 5230,
+   "3-Bedroom": 6455,
+   "4-Bedroom": 7926
+ },
+ {
+   "Month Year": "Aug 23",
+   "1-Bedroom": 4162,
+   "2-Bedroom": 5297,
+   "3-Bedroom": 6300,
+   "4-Bedroom": 7921
+ },
+ {
+   "Month Year": "Sep 23",
+   "1-Bedroom": 4166,
+   "2-Bedroom": 5326,
+   "3-Bedroom": 6282,
+   "4-Bedroom": 7755
+ },
+ {
+   "Month Year": "Oct 23",
+   "1-Bedroom": 4188,
+   "2-Bedroom": 5383,
+   "3-Bedroom": 6195,
+   "4-Bedroom": 7495
+ }
+]
