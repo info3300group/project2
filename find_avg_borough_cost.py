@@ -2,6 +2,8 @@ import os
 import csv
 import json
 
+#used to create NYCHousingCostData.csv
+
 root_directory = 'NYCPropertyCosts'
 result_dict = {}
 
