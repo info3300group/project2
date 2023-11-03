@@ -74,51 +74,7 @@
     //MAP DRAWING END
 
     //CREATIMG HOUSING COST AVERAGES FOR BOROUGH
+    
 
-    fetch("NYCHousingCostData.json")
-      .then((response) => response.json())
-      .then((data) => {
-        // where yearly averages are stored
-        let averagesByYear = {};
-
-        data.forEach((entry) => {
-          const monthYear = entry["Month Year"];
-          const year = monthYear.split(" ")[1];
-
-          const avg1Bedroom = entry["1-Bedroom"];
-          const avg2Bedroom = entry["2-Bedroom"];
-          const avg3Bedroom = entry["3-Bedroom"];
-          const avg4Bedroom = entry["4-Bedroom"];
-
-          // calc avg for each mon year
-          const average =
-            (avg1Bedroom + avg2Bedroom + avg3Bedroom + avg4Bedroom) / 4;
-
-          // calc avg for each year
-          if (!averagesByYear[year]) {
-            averagesByYear[year] = {
-              year: year,
-              averages: [],
-            };
-          }
-
-          averagesByYear[year].averages.push(average);
-        });
-
-        // AVG COST FOR EACH YEAR STORED IN THIS DICT
-        const yearlyAveragesDict = {};
-
-        for (const yearData of Object.values(averagesByYear)) {
-          const year = yearData.year;
-          const yearlyAverages =
-            yearData.averages.reduce((acc, val) => acc + val, 0) /
-            yearData.averages.length;
-          yearlyAveragesDict[year] = yearlyAverages.toFixed(2);
-        }
-
-        console.log(yearlyAveragesDict);
-      });
-
-    //END HOUSING COST AVERAGES FOR BOROUGH
   </script>
 </body>
