@@ -42,126 +42,9 @@
     value.textContent = startYear
     // YEAR SLIDER END
 
-    // RAT SIGHTINGS 
-    let rat_sightings_2010 = {}
-    let rat_sightings_2011 = {}
-    let rat_sightings_2012 = {}
-    let rat_sightings_2013 = {}
-    let rat_sightings_2014 = {}
-    let rat_sightings_2015 = {}
-    let rat_sightings_2016 = {}
-    let rat_sightings_2017 = {}
-    d3.csv('Rat_Sightings.csv').then(function (data) {
-      data.forEach(function (data) {
-        // 2010
-        if(data['Created Date'].includes('2010')){
-          if (data['Borough'] in rat_sightings_2010){
-            rat_sightings_2010[data['Borough']] = rat_sightings_2010[data['Borough']] + 1
-          }
-          else{
-            rat_sightings_2010[data['Borough']] = 1
-            console.log("a string", data['Borough'])
-          }
-        }
-        // 2011
-        if(data['Created Date'].includes('2011')){
-          if (data['Borough'] in rat_sightings_2011){
-            rat_sightings_2011[data['Borough']] = rat_sightings_2011[data['Borough']] + 1
-          }
-          else{
-            rat_sightings_2011[data['Borough']] = 1
-          }
-        }
-        // 2012
-        if(data['Created Date'].includes('2012')){
-          if (data['Borough'] in rat_sightings_2012){
-            rat_sightings_2012[data['Borough']] = rat_sightings_2012[data['Borough']] + 1
-          }
-          else{
-            rat_sightings_2012[data['Borough']] = 1
-          }
-        }
-        // 2013
-        if(data['Created Date'].includes('2013')){
-          if (data['Borough'] in rat_sightings_2013){
-            rat_sightings_2013[data['Borough']] = rat_sightings_2013[data['Borough']] + 1
-          }
-          else{
-            rat_sightings_2013[data['Borough']] = 1
-          }
-        }
-        // 2014
-        if(data['Created Date'].includes('2014')){
-          if (data['Borough'] in rat_sightings_2014){
-            rat_sightings_2014[data['Borough']] = rat_sightings_2014[data['Borough']] + 1
-          }
-          else{
-            rat_sightings_2014[data['Borough']] = 1
-          }
-        }
-        // 2015
-        if(data['Created Date'].includes('2015')){
-          if (data['Borough'] in rat_sightings_2015){
-            rat_sightings_2015[data['Borough']] = rat_sightings_2015[data['Borough']] + 1
-          }
-          else{
-            rat_sightings_2015[data['Borough']] = 1
-          }
-        }
-        // 2016
-        if(data['Created Date'].includes('2016')){
-          if (data['Borough'] in rat_sightings_2016){
-            rat_sightings_2016[data['Borough']] = rat_sightings_2016[data['Borough']] + 1
-          }
-          else{
-            rat_sightings_2016[data['Borough']] = 1
-          }
-        }
-        // 2017
-        if(data['Created Date'].includes('2017')){
-          if (data['Borough'] in rat_sightings_2017){
-            rat_sightings_2017[data['Borough']] = rat_sightings_2017[data['Borough']] + 1
-          }
-          else{
-            rat_sightings_2017[data['Borough']] = 1
-          }
-        }
-      });
-    });
 
-    console.log(rat_sightings_2010)
-    console.log(rat_sightings_2011)
-    console.log(rat_sightings_2012)
-    console.log(rat_sightings_2013)
-    console.log(rat_sightings_2014)
-    console.log(rat_sightings_2015)
-    console.log(rat_sightings_2016)
-    console.log(rat_sightings_2017)
-    let curr_rat_sightings = rat_sightings_2017
-    if (value.textContent == '2010'){
-      curr_rat_sightings = rat_sightings_2010
-    }
-    if (value.textContent == '2011'){
-      curr_rat_sightings = rat_sightings_2011
-    }
-    if (value.textContent == '2012'){
-      curr_rat_sightings = rat_sightings_2012
-    }
-    if (value.textContent == '2013'){
-      curr_rat_sightings = rat_sightings_2013
-    }
-    if (value.textContent == '2014'){
-      curr_rat_sightings = rat_sightings_2014
-    }
-    if (value.textContent == '2015'){
-      curr_rat_sightings = rat_sightings_2015
-    }
-    if (value.textContent == '2016'){
-      curr_rat_sightings = rat_sightings_2016
-    }
-    if (value.textContent == '2017'){
-      curr_rat_sightings = rat_sightings_2017
-    }
+
+
 
     //MAP DRAWING AND MOUSE OVER FUNCTIONS
     var width = 960,
@@ -190,13 +73,139 @@
     var g = svg.append('g');
 
     var mapLayer = g.append('g').classed('map-layer', true);
-    
-    const staten_island = [40.58790064222603, -74.15453601724714]
+
+    const staten_island = [-74.05073426497877,40.56639475864599]
 
     d3.json('nyc.geojson')
       .then(function (mapData) {
         d3.json('average_sale_prices.json')
           .then(function (salesPriceData) {
+
+            d3.csv('Rat_Sightings.csv').then(function (data) {
+              // RAT SIGHTINGS 
+              let rat_sightings_2010 = {}
+              let rat_sightings_2011 = {}
+              let rat_sightings_2012 = {}
+              let rat_sightings_2013 = {}
+              let rat_sightings_2014 = {}
+              let rat_sightings_2015 = {}
+              let rat_sightings_2016 = {}
+              let rat_sightings_2017 = {}
+
+              data.forEach(function (data) {
+                // 2010
+                if (data['Created Date'].includes('2010')) {
+                  if (data['Borough'] in rat_sightings_2010) {
+                    rat_sightings_2010[data['Borough']] = rat_sightings_2010[data['Borough']] + 1
+                  }
+                  else {
+                    rat_sightings_2010[data['Borough']] = 1
+                    console.log("a string", data['Borough'])
+                  }
+                }
+                // 2011
+                if (data['Created Date'].includes('2011')) {
+                  if (data['Borough'] in rat_sightings_2011) {
+                    rat_sightings_2011[data['Borough']] = rat_sightings_2011[data['Borough']] + 1
+                  }
+                  else {
+                    rat_sightings_2011[data['Borough']] = 1
+                  }
+                }
+                // 2012
+                if (data['Created Date'].includes('2012')) {
+                  if (data['Borough'] in rat_sightings_2012) {
+                    rat_sightings_2012[data['Borough']] = rat_sightings_2012[data['Borough']] + 1
+                  }
+                  else {
+                    rat_sightings_2012[data['Borough']] = 1
+                  }
+                }
+                // 2013
+                if (data['Created Date'].includes('2013')) {
+                  if (data['Borough'] in rat_sightings_2013) {
+                    rat_sightings_2013[data['Borough']] = rat_sightings_2013[data['Borough']] + 1
+                  }
+                  else {
+                    rat_sightings_2013[data['Borough']] = 1
+                  }
+                }
+                // 2014
+                if (data['Created Date'].includes('2014')) {
+                  if (data['Borough'] in rat_sightings_2014) {
+                    rat_sightings_2014[data['Borough']] = rat_sightings_2014[data['Borough']] + 1
+                  }
+                  else {
+                    rat_sightings_2014[data['Borough']] = 1
+                  }
+                }
+                // 2015
+                if (data['Created Date'].includes('2015')) {
+                  if (data['Borough'] in rat_sightings_2015) {
+                    rat_sightings_2015[data['Borough']] = rat_sightings_2015[data['Borough']] + 1
+                  }
+                  else {
+                    rat_sightings_2015[data['Borough']] = 1
+                  }
+                }
+                // 2016
+                if (data['Created Date'].includes('2016')) {
+                  if (data['Borough'] in rat_sightings_2016) {
+                    rat_sightings_2016[data['Borough']] = rat_sightings_2016[data['Borough']] + 1
+                  }
+                  else {
+                    rat_sightings_2016[data['Borough']] = 1
+                  }
+                }
+                // 2017
+                if (data['Created Date'].includes('2017')) {
+                  if (data['Borough'] in rat_sightings_2017) {
+                    rat_sightings_2017[data['Borough']] = rat_sightings_2017[data['Borough']] + 1
+                  }
+                  else {
+                    rat_sightings_2017[data['Borough']] = 1
+                  }
+                }
+
+                
+              });
+
+              console.log(rat_sightings_2010)
+                console.log(rat_sightings_2011)
+                console.log(rat_sightings_2012)
+                console.log(rat_sightings_2013)
+                console.log(rat_sightings_2014)
+                console.log(rat_sightings_2015)
+                console.log(rat_sightings_2016)
+                console.log(rat_sightings_2017)
+                let curr_rat_sightings = rat_sightings_2017
+                if (value.textContent == '2010') {
+                  curr_rat_sightings = rat_sightings_2010
+                }
+                if (value.textContent == '2011') {
+                  curr_rat_sightings = rat_sightings_2011
+                }
+                if (value.textContent == '2012') {
+                  curr_rat_sightings = rat_sightings_2012
+                }
+                if (value.textContent == '2013') {
+                  curr_rat_sightings = rat_sightings_2013
+                }
+                if (value.textContent == '2014') {
+                  curr_rat_sightings = rat_sightings_2014
+                }
+                if (value.textContent == '2015') {
+                  curr_rat_sightings = rat_sightings_2015
+                }
+                if (value.textContent == '2016') {
+                  curr_rat_sightings = rat_sightings_2016
+                }
+                if (value.textContent == '2017') {
+                  curr_rat_sightings = rat_sightings_2017
+                }
+            
+            // END OF RATS
+
 
             const features = mapData.features;
 
@@ -229,7 +238,7 @@
 
 
             const legendGroup = svg.append("g")
-              .attr("transform", `translate(${width*4/5}, ${height * 3/4})`)
+              .attr("transform", `translate(${width * 4 / 5}, ${height * 3 / 4})`)
 
 
             const legendText = [priceExtent[0]].concat(colorScale.quantiles())
@@ -272,32 +281,37 @@
             }
 
             console.log('staten island projection', typeof curr_rat_sightings, Object.keys(curr_rat_sightings))
-        console.log(curr_rat_sightings)
-        // staten island rat bubble ?? 
-        svg
-          .append('circle')
-          .attr('cx', projection(staten_island)[0])
-          .attr('cy', projection(staten_island)[1])
-          .attr('r', curr_rat_sightings['staten island']/500)
-          .style('fill', 'red')
-          .style('opacity', '0.5')
-          .style('stroke', 'red');
+            console.log(projection(staten_island))
+            // staten island rat bubble ?? 
+            svg
+              .append('circle')
+              .attr('cx', projection(staten_island)[0])
+              .attr('cy', projection(staten_island)[1])
+              .attr('r', curr_rat_sightings['STATEN ISLAND'] / 50)
+              .style('fill', 'red')
+              .style('opacity', '0.5')
+              .style('stroke', 'red');
 
-        mapLayer
-          .selectAll('path')
-          .data(features)
-          .join('path')
-          .attr('d', pathGenerator)
-          .style('fill', function (d) {
-            return colorMap[d.properties.boro_name];
-          })
+            mapLayer
+              .selectAll('path')
+              .data(features)
+              .join('path')
+              .attr('d', pathGenerator)
+              .style('fill', function (d) {
+                return colorMap[d.properties.boro_name];
+              })
+            
+            });
+
+
+           
 
 
           })
           .catch(function (error) {
-            console.error('Error loading GeoJSON:', error);        
-      });
-    }
+            console.error('Error loading GeoJSON:', error);
+          });
+      }
       )
 
     function mouseover(d, path) {
