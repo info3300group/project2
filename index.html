@@ -32,13 +32,13 @@
   <svg></svg>
   <div id="slider-container"></div>
   <div id="selected-year">Selected Year: <span id="year-value">2010</span></div>
-  <!-- <script src="https://d3js.org/d3.v3.min.js"></script> -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://d3js.org/topojson.v3.min.js"></script>
   <script>
     // YEAR SLIDER
-    const years = d3.range(2010, 2019); // Generate an array of years from 2010 to 2018
+    const years = d3.range(2010, 2017); // Generate an array of years from 2010 to 2018
 
+    /*
     const sliderWidth = 600; // Set the width of the slider container
     const sliderHeight = 80; // Set the height of the slider container
 
@@ -97,8 +97,18 @@
         // Move the button to the corresponding year mark
         const buttonX = xScale(selectedYear);
         moveButton.attr('cx', buttonX);
-    }
+    } */
     // YEAR SLIDER END
+
+    const slider = d3.select('#slider-container').append('input')
+        .attr('type', 'range')
+        .attr('min', 2010)
+        .attr('max', 2017)
+        .attr('step', 1)
+        .on('input', e => {
+          d3.select('#year-value').text(e.target.value)
+        })
+        .attr('value', 2010)
 
     //MAP DRAWING AND MOUSE OVER FUNCTIONS
     var width = 960,
@@ -111,12 +121,6 @@
       Queens: '#1E90FF', // Dodger Blue
       'Staten Island': '#6495ED', // Cornflower Blue
     };
-
-    // var projection = d3.geo
-    //   .mercator()
-    //   .scale(45000)
-    //   .center([-73.935242, 40.73061])
-    //   .translate([width / 2, height / 2]);
 
     const projection = d3
       .geoMercator()
@@ -132,22 +136,6 @@
     var g = svg.append('g');
 
     var mapLayer = g.append('g').classed('map-layer', true);
-
-    // d3.json('nyc.geojson', function (error, mapData) {
-    //   var features = mapData.features;
-
-    //   mapLayer
-    //     .selectAll('path')
-    //     .data(features)
-    //     .enter()
-    //     .append('path')
-    //     .attr('d', path)
-    //     .style('fill', function (d) {
-    //       return colorMap[d.properties.boro_name];
-    //     })
-    //     .on('mouseover', mouseover)
-    //     .on('mouseout', mouseout);
-    // });
 
     d3.json('nyc.geojson')
       .then(function (mapData) {
@@ -191,6 +179,28 @@
     }
 
     var boroughName = g.append('text').attr('x', 20).attr('y', 45);
+
+    function drawHeatMap(salesPriceData, currentYear) {
+
+      const currentYearData = Object.keys(salesPriceData).map(
+        v => [v, salesPriceData[v][String(currentYear)]])
+
+      const priceExtent = d3.extent(Object.keys(salesPriceData)
+        .map(v => Object.keys(salesPriceData[v])
+          .map(k => Number(salesPriceData[v][k]))).flat())
+
+      const colors = [
+        "mediumaquamarine",
+        "skyblue",
+        "darkcyan",
+        "lightsalmon",
+        "orchid"
+      ]
+
+      //const colorScale = d3.scaleQuantile().domain(priceExtent).range(colors)
+
+      console.log(currentYearData)
+    }
 
     //MAP DRAWING END
   </script>
