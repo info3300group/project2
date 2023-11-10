@@ -92,10 +92,7 @@
               "orchid"
             ]*/
 
-            const colorScale = d3.scaleQuantile().domain(allPrices).range(colors)
-
-
-
+            const colorScale = d3.scaleQuantile(d3.schemeBlues[6].slice(1)).domain(allPrices)
 
             input.addEventListener("input", (event) => {
               const year = event.target.value
@@ -117,30 +114,27 @@
 
 
             const legendGroup = svg.append("g")
-              .attr("transform", `translate(${width*4/5}, 
-            ${height * 1/2})`)
+              .attr("transform", `translate(${width*4/5}, ${height * 3/4})`)
 
 
-            const legendText = [priceExtent[0]] + colorScale.quantiles()
+            const legendText = [priceExtent[0]].concat(colorScale.quantiles())
 
-            const legendValues = Array(legendText.length).fill().map((_, i, arr) =>
-              priceExtent[1] - ((i / (arr.length - 1)) * (priceExtent[1] - priceExtent[0])))
 
             legendGroup.selectAll("circle")
-              .data(legendValues)
+              .data(legendText)
               .join('circle')
-              .attr('cy', (_, i) => i * 30)
+              .attr('cy', (_, i) => -i * 30)
               .attr('cx', 0)
               .attr('r', 5)
-              .attr('fill', (_,i) => colorScale(legendText[i]))
+              .attr('fill', v => colorScale(v))
 
             legendGroup.selectAll("text")
-              .data(legendValues)
+              .data(legendText)
               .join('text')
-              .attr('y', (_, i) => i * 30 + 5)
+              .attr('y', (_, i) => -(i * 30) + 5)
               .attr('x', 20)
               .attr('r', 5)
-              .text((_, i) => d3.format('$,.0f')(legendText[i]))
+              .text(v => d3.format('$,.0f')(v))
               .style("font-family", "sans-serif")
               .style("font-weight", "bold")
               .style("fill", 'black')
