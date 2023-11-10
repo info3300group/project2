@@ -45,106 +45,6 @@
     
     // YEAR SLIDER END
 
-    const slider = d3.select('#slider-container').append('input')
-        .attr('type', 'range')
-        .attr('min', 2010)
-        .attr('max', 2017)
-        .attr('step', 1)
-        .on('input', e => {
-          d3.select('#year-value').text(e.target.value)
-        })
-        .attr('value', 2010)
-
-    //MAP DRAWING AND MOUSE OVER FUNCTIONS
-    var width = 960,
-      height = 500;
-
-    var colorMap = {
-      Bronx: '#ADD8E6', // Light Blue
-      Brooklyn: '#4169E1', // Royal Blue
-      Manhattan: '#00BFFF', // Deep Sky Blue
-      Queens: '#1E90FF', // Dodger Blue
-      'Staten Island': '#6495ED', // Cornflower Blue
-    };
-
-    const projection = d3
-      .geoMercator()
-      .scale(45000)
-      .center([-73.935242, 40.73061])
-      .translate([width / 2, height / 2]);
-
-    // var path = d3.geo.path().projection(projection);
-    const pathGenerator = d3.geoPath().projection(projection);
-
-    var svg = d3.select('svg').attr('width', width).attr('height', height);
-
-    var g = svg.append('g');
-
-    var mapLayer = g.append('g').classed('map-layer', true);
-
-    d3.json('nyc.geojson')
-      .then(function (mapData) {
-        const features = mapData.features;
-
-        mapLayer
-          .selectAll('path')
-          .data(features)
-          .join('path')
-          .attr('d', pathGenerator)
-          .style('fill', function (d) {
-            return colorMap[d.properties.boro_name];
-          })
-          .on('mouseover', function(_,d) {mouseover(d, this)})
-          .on('mouseout', function(_,d) {mouseout(d, this)});
-      })
-      .catch(function (error) {
-        console.error('Error loading GeoJSON:', error);
-      });
-
-    function mouseover(d, path) {
-      // Highlight hovered borough with orange
-      //console.log(d3.select(thing))
-      d3.select(path).style('fill', 'rgba(255, 165, 0, 0.3)');
-      boroughName
-        .text(d.properties.boro_name)
-        .attr('font-size', '42px')
-        .style('font-family', 'Arial');
-    }
-
-    // reset borough color and text
-    function mouseout(d, path) {
-      d3.select(path).style('fill', function (d) {
-        return colorMap[d.properties.boro_name];
-      });
-      boroughName.text('');
-    }
-
-    var boroughName = g.append('text').attr('x', 20).attr('y', 45);
-
-    function drawHeatMap(salesPriceData, currentYear) {
-
-      const currentYearData = Object.keys(salesPriceData).map(
-        v => [v, salesPriceData[v][String(currentYear)]])
-
-      const priceExtent = d3.extent(Object.keys(salesPriceData)
-        .map(v => Object.keys(salesPriceData[v])
-          .map(k => Number(salesPriceData[v][k]))).flat())
-
-      const colors = [
-        "mediumaquamarine",
-        "skyblue",
-        "darkcyan",
-        "lightsalmon",
-        "orchid"
-      ]
-
-      //const colorScale = d3.scaleQuantile().domain(priceExtent).range(colors)
-
-      console.log(currentYearData)
-    }
-
-    //MAP DRAWING END
-
     // RAT SIGHTINGS 
     let rat_sightings_2010 = {}
     let rat_sightings_2011 = {}
@@ -163,6 +63,7 @@
           }
           else{
             rat_sightings_2010[data['Borough']] = 1
+            console.log("a string", data['Borough'])
           }
         }
         // 2011
@@ -231,6 +132,147 @@
       });
     });
 
-    // 
+    console.log(rat_sightings_2010)
+    console.log(rat_sightings_2011)
+    console.log(rat_sightings_2012)
+    console.log(rat_sightings_2013)
+    console.log(rat_sightings_2014)
+    console.log(rat_sightings_2015)
+    console.log(rat_sightings_2016)
+    console.log(rat_sightings_2017)
+    let curr_rat_sightings = rat_sightings_2017
+    if (value.textContent == '2010'){
+      curr_rat_sightings = rat_sightings_2010
+    }
+    if (value.textContent == '2011'){
+      curr_rat_sightings = rat_sightings_2011
+    }
+    if (value.textContent == '2012'){
+      curr_rat_sightings = rat_sightings_2012
+    }
+    if (value.textContent == '2013'){
+      curr_rat_sightings = rat_sightings_2013
+    }
+    if (value.textContent == '2014'){
+      curr_rat_sightings = rat_sightings_2014
+    }
+    if (value.textContent == '2015'){
+      curr_rat_sightings = rat_sightings_2015
+    }
+    if (value.textContent == '2016'){
+      curr_rat_sightings = rat_sightings_2016
+    }
+    if (value.textContent == '2017'){
+      curr_rat_sightings = rat_sightings_2017
+    }
+
+    //MAP DRAWING AND MOUSE OVER FUNCTIONS
+    var width = 960,
+      height = 500;
+
+    var colorMap = {
+      Bronx: '#ADD8E6', // Light Blue
+      Brooklyn: '#4169E1', // Royal Blue
+      Manhattan: '#00BFFF', // Deep Sky Blue
+      Queens: '#1E90FF', // Dodger Blue
+      'Staten Island': '#6495ED', // Cornflower Blue
+    };
+
+    const projection = d3
+      .geoMercator()
+      .scale(45000)
+      .center([-73.935242, 40.73061])
+      .translate([width / 2, height / 2]);
+
+    // var path = d3.geo.path().projection(projection);
+    const pathGenerator = d3.geoPath().projection(projection);
+
+    var svg = d3.select('svg').attr('width', width).attr('height', height);
+
+    var g = svg.append('g');
+
+    var mapLayer = g.append('g').classed('map-layer', true);
+    
+    const staten_island = [40.58790064222603, -74.15453601724714]
+
+    d3.json('nyc.geojson')
+      .then(function (mapData) {
+        const features = mapData.features;
+
+
+        console.log('staten island projection', typeof curr_rat_sightings, Object.keys(curr_rat_sightings))
+        console.log(curr_rat_sightings)
+        // staten island rat bubble ?? 
+        svg
+          .append('circle')
+          .attr('cx', projection(staten_island)[0])
+          .attr('cy', projection(staten_island)[1])
+          .attr('r', curr_rat_sightings['staten island']/500)
+          .style('fill', 'red')
+          .style('opacity', '0.5')
+          .style('stroke', 'red');
+
+        mapLayer
+          .selectAll('path')
+          .data(features)
+          .join('path')
+          .attr('d', pathGenerator)
+          .style('fill', function (d) {
+            return colorMap[d.properties.boro_name];
+          })
+          .on('mouseover', function(_,d) {mouseover(d, this)})
+          .on('mouseout', function(_,d) {mouseout(d, this)});
+      })
+      .catch(function (error) {
+        console.error('Error loading GeoJSON:', error);
+      });
+
+    function mouseover(d, path) {
+      // Highlight hovered borough with orange
+      //console.log(d3.select(thing))
+      d3.select(path).style('fill', 'rgba(255, 165, 0, 0.3)');
+      boroughName
+        .text(d.properties.boro_name)
+        .attr('font-size', '42px')
+        .style('font-family', 'Arial');
+    }
+
+    // reset borough color and text
+    function mouseout(d, path) {
+      d3.select(path).style('fill', function (d) {
+        return colorMap[d.properties.boro_name];
+      });
+      boroughName.text('');
+    }
+
+    var boroughName = g.append('text').attr('x', 20).attr('y', 45);
+
+    function drawHeatMap(salesPriceData, currentYear) {
+
+      const currentYearData = Object.keys(salesPriceData).map(
+        v => [v, salesPriceData[v][String(currentYear)]])
+
+      const priceExtent = d3.extent(Object.keys(salesPriceData)
+        .map(v => Object.keys(salesPriceData[v])
+          .map(k => Number(salesPriceData[v][k]))).flat())
+
+      const colors = [
+        "mediumaquamarine",
+        "skyblue",
+        "darkcyan",
+        "lightsalmon",
+        "orchid"
+      ]
+
+      //const colorScale = d3.scaleQuantile().domain(priceExtent).range(colors)
+
+      console.log(currentYearData)
+    }
+
+
+
+    //MAP DRAWING END
+
+
   </script>
 </body>
