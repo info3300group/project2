@@ -5,117 +5,193 @@
     fill: #fff;
     stroke: #aaa;
   }
+  #slider-container {
+      width: 80%;
+      margin: 20px auto;
+      position: relative;
+  }
+  #selected-year {
+      font-size: 18px;
+      margin-top: 10px;
+  }
+  .slider {
+      fill: #ccc; /* Gray color for the slider */
+      opacity: 0.5;
+  }
+  .year-mark {
+      fill: #000; /* Black color for the tick marks */
+      cursor: pointer;
+  }
+  .move-button {
+      fill: #ff9800;
+      cursor: pointer;
+  }
+    </style>
 </style>
-
 <body>
   <svg></svg>
-  <div id='year_slider_div'></div>
-  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <div id="slider-container"></div>
+  <div id="selected-year">Selected Year: <span id="year-value">2010</span></div>
+  <!-- <script src="https://d3js.org/d3.v3.min.js"></script> -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://d3js.org/topojson.v3.min.js"></script>
   <script>
+    // YEAR SLIDER
+    const years = d3.range(2010, 2019); // Generate an array of years from 2010 to 2018
+
+    const sliderWidth = 600; // Set the width of the slider container
+    const sliderHeight = 80; // Set the height of the slider container
+
+    const xScale = d3.scaleLinear()
+        .domain([0, years.length - 1])
+        .range([0, sliderWidth]);
+
+    const slider_svg = d3.select('#slider-container')
+        .append('svg')
+        .attr('width', sliderWidth)
+        .attr('height', sliderHeight);
+
+    // Add year marks (black rectangles on top)
+    slider_svg.selectAll('.year-mark')
+        .data(years)
+        .enter().append('rect')
+        .attr('class', 'year-mark')
+        .attr('x', (d) => xScale(d) - 1)
+        .attr('y', 0)
+        .attr('width', 2)
+        .attr('height', sliderHeight)
+        .on('click', (event, d) => updateSlider(d));
+
+    // Add slider (gray rectangle)
+    const slider = slider_svg.append('rect')
+        .attr('class', 'slider')
+        .attr('x', 0)
+        .attr('y', 20)
+        .attr('width', sliderWidth)
+        .attr('height', 40)
+        .style('cursor', 'pointer') // Change cursor on the slider for interaction
+        .call(
+            d3.drag()
+                .on('start.interrupt', function () {
+                    slider.interrupt();
+                })
+                .on('start drag', function (event) {
+                    const index = Math.round(xScale.invert(event.x / sliderWidth * xScale.range()[1]));
+                    updateSlider(years[index]);
+                })
+        );
+
+    // Add button to move to the next year (as a circle)
+    const moveButton = slider_svg.append('circle')
+        .attr('class', 'move-button')
+        .attr('r', 10)
+        .attr('cy', 40)
+        .on('click', function () {
+            const currentYear = parseInt(d3.select('#year-value').text());
+            const nextYear = currentYear < 2018 ? currentYear + 1 : 2010;
+            updateSlider(nextYear);
+        });
+
+    function updateSlider(selectedYear) {
+        d3.select('#year-value').text(selectedYear);
+        // Move the button to the corresponding year mark
+        const buttonX = xScale(selectedYear);
+        moveButton.attr('cx', buttonX);
+    }
+    // YEAR SLIDER END
+
     //MAP DRAWING AND MOUSE OVER FUNCTIONS
     var width = 960,
       height = 500;
 
     var colorMap = {
-      Bronx: "#ADD8E6", // Light Blue
-      Brooklyn: "#4169E1", // Royal Blue
-      Manhattan: "#00BFFF", // Deep Sky Blue
-      Queens: "#1E90FF", // Dodger Blue
-      "Staten Island": "#6495ED", // Cornflower Blue
+      Bronx: '#ADD8E6', // Light Blue
+      Brooklyn: '#4169E1', // Royal Blue
+      Manhattan: '#00BFFF', // Deep Sky Blue
+      Queens: '#1E90FF', // Dodger Blue
+      'Staten Island': '#6495ED', // Cornflower Blue
     };
 
-    var projection = d3.geo
-      .mercator()
+    // var projection = d3.geo
+    //   .mercator()
+    //   .scale(45000)
+    //   .center([-73.935242, 40.73061])
+    //   .translate([width / 2, height / 2]);
+
+    const projection = d3
+      .geoMercator()
       .scale(45000)
       .center([-73.935242, 40.73061])
       .translate([width / 2, height / 2]);
 
-    var path = d3.geo.path().projection(projection);
+    // var path = d3.geo.path().projection(projection);
+    const pathGenerator = d3.geoPath().projection(projection);
 
-    var svg = d3.select("svg").attr("width", width).attr("height", height);
+    var svg = d3.select('svg').attr('width', width).attr('height', height);
 
-    var g = svg.append("g");
+    var g = svg.append('g');
 
-    var mapLayer = g.append("g").classed("map-layer", true);
+    var mapLayer = g.append('g').classed('map-layer', true);
 
-    d3.json("nyc.geojson", function (error, mapData) {
-      d3.json("average_sale_prices.json", function (_, salesPriceData) {
+    // d3.json('nyc.geojson', function (error, mapData) {
+    //   var features = mapData.features;
 
-        var features = mapData.features;
+    //   mapLayer
+    //     .selectAll('path')
+    //     .data(features)
+    //     .enter()
+    //     .append('path')
+    //     .attr('d', path)
+    //     .style('fill', function (d) {
+    //       return colorMap[d.properties.boro_name];
+    //     })
+    //     .on('mouseover', mouseover)
+    //     .on('mouseout', mouseout);
+    // });
+
+    d3.json('nyc.geojson')
+      .then(function (mapData) {
+        const features = mapData.features;
 
         mapLayer
-          .selectAll("path")
+          .selectAll('path')
           .data(features)
           .enter()
-          .append("path")
-          .attr("d", path)
-          .style("fill", function (d) {
+          .append('path')
+          .attr('d', pathGenerator)
+          .style('fill', function (d) {
+            console.log('d in fill', d);
             return colorMap[d.properties.boro_name];
           })
-          .on("mouseover", mouseover)
-          .on("mouseout", mouseout);
-
-        const slider = d3.select('#year_slider_div')
-          .append('input')
-          .attr('type', 'range')
-          .attr('min', 2010)
-          .attr('max', 2017)
-          .attr('step', 1)
-          .on('input', () => {
-            drawHeatMap(salesPriceData, event.target.value)
+          .on('mouseover', function (d) {
+            console.log(d);
+            return mouseover(d);
           })
-          .attr('value', 2015)
-
-
-        // init display
-        let currentYear = 2010
-        drawHeatMap(salesPriceData, currentYear)
+          .on('mouseout', mouseout);
       })
-    });
+      .catch(function (error) {
+        console.error('Error loading GeoJSON:', error);
+      });
 
     function mouseover(d) {
       // Highlight hovered borough with orange
-      d3.select(this).style("fill", "rgba(255, 165, 0, 0.3)");
+      d3.select(this).style('fill', 'rgba(255, 165, 0, 0.3)');
       boroughName
         .text(d.properties.boro_name)
-        .attr("font-size", "42px")
-        .style("font-family", "Arial");
+        .attr('font-size', '42px')
+        .style('font-family', 'Arial');
     }
 
     // reset borough color and text
     function mouseout(d) {
-      d3.select(this).style("fill", function (d) {
+      d3.select(this).style('fill', function (d) {
         return colorMap[d.properties.boro_name];
       });
-      boroughName.text("");
+      boroughName.text('');
     }
 
-    var boroughName = g.append("text").attr("x", 20).attr("y", 45);
+    var boroughName = g.append('text').attr('x', 20).attr('y', 45);
 
     //MAP DRAWING END
-
-    function drawHeatMap(salesPriceData, currentYear) {
-
-      const currentYearData = Object.keys(salesPriceData).map(
-        v => [v, salesPriceData[v][String(currentYear)]])
-
-      const priceExtent = d3.extent(Object.keys(salesPriceData)
-        .map(v => Object.keys(salesPriceData[v])
-          .map(k => Number(salesPriceData[v][k]))).flat())
-
-      const colors = [
-        "mediumaquamarine",
-        "skyblue",
-        "darkcyan",
-        "lightsalmon",
-        "orchid"
-      ]
-
-      //const colorScale = d3.scaleQuantile().domain(priceExtent).range(colors)
-
-      console.log(currentYearData)
-    }
-
-
   </script>
 </body>
