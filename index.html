@@ -5,19 +5,20 @@
     fill: #fff;
     stroke: #aaa;
   }
-  #slider-container {
-      width: 80%;
-      margin: 20px auto;
-      position: relative;
-  }
 
-    </style>
+  #slider-container {
+    width: 80%;
+    margin: 20px auto;
+    position: relative;
+  }
 </style>
+</style>
+
 <body>
   <svg></svg>
   <div id="slider-container"></div>
-    <label for="temp">Currently the year is: <output id="value"></output> </label><br />
-    <input id = "slider" type="range" min="2010" max="2017" list="markers" value = "2017" />
+  <label for="temp">Currently the year is: <output id="value"></output> </label><br />
+  <input id="slider" type="range" min="2010" max="2017" list="markers" value="2017" />
   </div>
   <datalist id="markers">
     <option value="2010"></option>
@@ -35,25 +36,11 @@
   <script src="https://d3js.org/topojson.v3.min.js"></script>
   <script>
     // YEAR SLIDER
+    const startYear = 2017
     const input = document.querySelector("#slider");
     const value = document.querySelector("#value");
-    value.textContent = "2017"
-    input.addEventListener("input", (event) => {
-      value.textContent = event.target.value;
-      console.log(event.target.value)
-    });
-    
+    value.textContent = startYear
     // YEAR SLIDER END
-
-    const slider = d3.select('#slider-container').append('input')
-        .attr('type', 'range')
-        .attr('min', 2010)
-        .attr('max', 2017)
-        .attr('step', 1)
-        .on('input', e => {
-          d3.select('#year-value').text(e.target.value)
-        })
-        .attr('value', 2010)
 
     //MAP DRAWING AND MOUSE OVER FUNCTIONS
     var width = 960,
@@ -84,21 +71,35 @@
 
     d3.json('nyc.geojson')
       .then(function (mapData) {
-        const features = mapData.features;
+        d3.json('average_sale_prices.json')
+          .then(function (salesPriceData) {
+            const features = mapData.features;
 
-        mapLayer
-          .selectAll('path')
-          .data(features)
-          .join('path')
-          .attr('d', pathGenerator)
-          .style('fill', function (d) {
-            return colorMap[d.properties.boro_name];
+            input.addEventListener("input", (event) => {
+              const year = event.target.value
+              value.textContent = year;
+              console.log(year)
+              drawHeatMap(salesPriceData, year)
+
+            });
+
+            mapLayer
+              .selectAll('path')
+              .data(features)
+              .join('path')
+              .attr('d', pathGenerator)
+              .style('fill', function (d) {
+                return colorMap[d.properties.boro_name];
+              })
+              .on('mouseover', function (_, d) { mouseover(d, this) })
+              .on('mouseout', function (_, d) { mouseout(d, this) });
+            
+              drawHeatMap(salesPriceData, startYear)
+          
+            })
+          .catch(function (error) {
+            console.error('Error loading GeoJSON:', error);
           })
-          .on('mouseover', function(_,d) {mouseover(d, this)})
-          .on('mouseout', function(_,d) {mouseout(d, this)});
-      })
-      .catch(function (error) {
-        console.error('Error loading GeoJSON:', error);
       });
 
     function mouseover(d, path) {
@@ -126,9 +127,9 @@
       const currentYearData = Object.keys(salesPriceData).map(
         v => [v, salesPriceData[v][String(currentYear)]])
 
-      const priceExtent = d3.extent(Object.keys(salesPriceData)
+      const priceExtent = Object.keys(salesPriceData)
         .map(v => Object.keys(salesPriceData[v])
-          .map(k => Number(salesPriceData[v][k]))).flat())
+          .map(k => Number(salesPriceData[v][k]))).flat()
 
       const colors = [
         "mediumaquamarine",
@@ -138,7 +139,9 @@
         "orchid"
       ]
 
-      //const colorScale = d3.scaleQuantile().domain(priceExtent).range(colors)
+      const colorScale = d3.scaleQuantile().domain(priceExtent).range(colors)
+
+      
 
       console.log(currentYearData)
     }
