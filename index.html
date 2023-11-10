@@ -73,13 +73,34 @@
       .then(function (mapData) {
         d3.json('average_sale_prices.json')
           .then(function (salesPriceData) {
+
             const features = mapData.features;
+
+            const allPrices = Object.keys(salesPriceData)
+              .map(v => Object.keys(salesPriceData[v])
+                .map(k => Number(salesPriceData[v][k]))).flat()
+
+            const priceExtent = d3.extent(allPrices)
+
+            const colors = Object.values(colorMap)
+
+            /*[
+              "mediumaquamarine",
+              "skyblue",
+              "darkcyan",
+              "lightsalmon",
+              "orchid"
+            ]*/
+
+            const colorScale = d3.scaleQuantile().domain(allPrices).range(colors)
+
+
+
 
             input.addEventListener("input", (event) => {
               const year = event.target.value
               value.textContent = year;
-              console.log(year)
-              drawHeatMap(salesPriceData, year)
+              drawHeatMap(year)
 
             });
 
@@ -92,11 +113,62 @@
                 return colorMap[d.properties.boro_name];
               })
               .on('mouseover', function (_, d) { mouseover(d, this) })
-              .on('mouseout', function (_, d) { mouseout(d, this) });
-            
-              drawHeatMap(salesPriceData, startYear)
-          
-            })
+              .on('mouseout', function (_, d) { mouseout(d, this) })
+
+
+            const legendGroup = svg.append("g")
+              .attr("transform", `translate(${width*4/5}, 
+            ${height * 1/2})`)
+
+
+            const legendText = [priceExtent[0]] + colorScale.quantiles()
+
+            const legendValues = Array(legendText.length).fill().map((_, i, arr) =>
+              priceExtent[1] - ((i / (arr.length - 1)) * (priceExtent[1] - priceExtent[0])))
+
+            legendGroup.selectAll("circle")
+              .data(legendValues)
+              .join('circle')
+              .attr('cy', (_, i) => i * 30)
+              .attr('cx', 0)
+              .attr('r', 5)
+              .attr('fill', (_,i) => colorScale(legendText[i]))
+
+            legendGroup.selectAll("text")
+              .data(legendValues)
+              .join('text')
+              .attr('y', (_, i) => i * 30 + 5)
+              .attr('x', 20)
+              .attr('r', 5)
+              .text((_, i) => d3.format('$,.0f')(legendText[i]))
+              .style("font-family", "sans-serif")
+              .style("font-weight", "bold")
+              .style("fill", 'black')
+
+            drawHeatMap(startYear)
+
+
+
+
+
+
+
+            function drawHeatMap(currentYear) {
+
+              let currentYearData = []
+
+              Object.keys(colorMap).forEach(k => {
+                currentYearData[k] = salesPriceData[k][currentYear]
+                colorMap[k] = colorScale(currentYearData[k])
+              })
+
+              mapLayer.selectAll('path')
+                .style('fill', f => colorScale(currentYearData[f.properties.boro_name]))
+
+            }
+
+
+          })
           .catch(function (error) {
             console.error('Error loading GeoJSON:', error);
           })
@@ -122,29 +194,6 @@
 
     var boroughName = g.append('text').attr('x', 20).attr('y', 45);
 
-    function drawHeatMap(salesPriceData, currentYear) {
-
-      const currentYearData = Object.keys(salesPriceData).map(
-        v => [v, salesPriceData[v][String(currentYear)]])
-
-      const priceExtent = Object.keys(salesPriceData)
-        .map(v => Object.keys(salesPriceData[v])
-          .map(k => Number(salesPriceData[v][k]))).flat()
-
-      const colors = [
-        "mediumaquamarine",
-        "skyblue",
-        "darkcyan",
-        "lightsalmon",
-        "orchid"
-      ]
-
-      const colorScale = d3.scaleQuantile().domain(priceExtent).range(colors)
-
-      
-
-      console.log(currentYearData)
-    }
 
     //MAP DRAWING END
   </script>
