@@ -6,13 +6,15 @@
     stroke: #aaa;
   }
 </style>
+
 <body>
   <svg></svg>
+  <div id='year_slider_div'></div>
   <script src="https://d3js.org/d3.v3.min.js"></script>
   <script>
     //MAP DRAWING AND MOUSE OVER FUNCTIONS
     var width = 960,
-    height = 500;
+      height = 500;
 
     var colorMap = {
       Bronx: "#ADD8E6", // Light Blue
@@ -37,19 +39,38 @@
     var mapLayer = g.append("g").classed("map-layer", true);
 
     d3.json("nyc.geojson", function (error, mapData) {
-      var features = mapData.features;
+      d3.json("average_sale_prices.json", function (_, salesPriceData) {
 
-      mapLayer
-        .selectAll("path")
-        .data(features)
-        .enter()
-        .append("path")
-        .attr("d", path)
-        .style("fill", function (d) {
-          return colorMap[d.properties.boro_name];
-        })
-        .on("mouseover", mouseover)
-        .on("mouseout", mouseout);
+        var features = mapData.features;
+
+        mapLayer
+          .selectAll("path")
+          .data(features)
+          .enter()
+          .append("path")
+          .attr("d", path)
+          .style("fill", function (d) {
+            return colorMap[d.properties.boro_name];
+          })
+          .on("mouseover", mouseover)
+          .on("mouseout", mouseout);
+
+        const slider = d3.select('#year_slider_div')
+          .append('input')
+          .attr('type', 'range')
+          .attr('min', 2010)
+          .attr('max', 2017)
+          .attr('step', 1)
+          .on('input', () => {
+            drawHeatMap(salesPriceData, event.target.value)
+          })
+          .attr('value', 2015)
+
+
+        // init display
+        let currentYear = 2010
+        drawHeatMap(salesPriceData, currentYear)
+      })
     });
 
     function mouseover(d) {
@@ -72,5 +93,29 @@
     var boroughName = g.append("text").attr("x", 20).attr("y", 45);
 
     //MAP DRAWING END
+
+    function drawHeatMap(salesPriceData, currentYear) {
+
+      const currentYearData = Object.keys(salesPriceData).map(
+        v => [v, salesPriceData[v][String(currentYear)]])
+
+      const priceExtent = d3.extent(Object.keys(salesPriceData)
+        .map(v => Object.keys(salesPriceData[v])
+          .map(k => Number(salesPriceData[v][k]))).flat())
+
+      const colors = [
+        "mediumaquamarine",
+        "skyblue",
+        "darkcyan",
+        "lightsalmon",
+        "orchid"
+      ]
+
+      //const colorScale = d3.scaleQuantile().domain(priceExtent).range(colors)
+
+      console.log(currentYearData)
+    }
+
+
   </script>
 </body>
