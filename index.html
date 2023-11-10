@@ -144,26 +144,22 @@
         mapLayer
           .selectAll('path')
           .data(features)
-          .enter()
-          .append('path')
+          .join('path')
           .attr('d', pathGenerator)
           .style('fill', function (d) {
-            console.log('d in fill', d);
             return colorMap[d.properties.boro_name];
           })
-          .on('mouseover', function (d) {
-            console.log(d);
-            return mouseover(d);
-          })
-          .on('mouseout', mouseout);
+          .on('mouseover', function(_,d) {mouseover(d, this)})
+          .on('mouseout', function(_,d) {mouseout(d, this)});
       })
       .catch(function (error) {
         console.error('Error loading GeoJSON:', error);
       });
 
-    function mouseover(d) {
+    function mouseover(d, path) {
       // Highlight hovered borough with orange
-      d3.select(this).style('fill', 'rgba(255, 165, 0, 0.3)');
+      //console.log(d3.select(thing))
+      d3.select(path).style('fill', 'rgba(255, 165, 0, 0.3)');
       boroughName
         .text(d.properties.boro_name)
         .attr('font-size', '42px')
@@ -171,8 +167,8 @@
     }
 
     // reset borough color and text
-    function mouseout(d) {
-      d3.select(this).style('fill', function (d) {
+    function mouseout(d, path) {
+      d3.select(path).style('fill', function (d) {
         return colorMap[d.properties.boro_name];
       });
       boroughName.text('');
