@@ -10,94 +10,39 @@
       margin: 20px auto;
       position: relative;
   }
-  #selected-year {
-      font-size: 18px;
-      margin-top: 10px;
-  }
-  .slider {
-      fill: #ccc; /* Gray color for the slider */
-      opacity: 0.5;
-  }
-  .year-mark {
-      fill: #000; /* Black color for the tick marks */
-      cursor: pointer;
-  }
-  .move-button {
-      fill: #ff9800;
-      cursor: pointer;
-  }
+
     </style>
 </style>
 <body>
   <svg></svg>
   <div id="slider-container"></div>
-  <div id="selected-year">Selected Year: <span id="year-value">2010</span></div>
+    <label for="temp">Currently the year is: <output id="value"></output> </label><br />
+    <input id = "slider" type="range" min="2010" max="2017" list="markers" value = "2017" />
+  </div>
+  <datalist id="markers">
+    <option value="2010"></option>
+    <option value="2011"></option>
+    <option value="2012"></option>
+    <option value="2013"></option>
+    <option value="2014"></option>
+    <option value="2015"></option>
+    <option value="2016"></option>
+  </datalist>
+  <!-- <input id="slider-container" type="range" min="2010" max="2017" /> -->
+  <!-- <div id="selected-year">Selected Year: <span id="year-value">2010</span></div> -->
+  <!-- <script src="https://d3js.org/d3.v3.min.js"></script> -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://d3js.org/topojson.v3.min.js"></script>
   <script>
     // YEAR SLIDER
-    const years = d3.range(2010, 2017); // Generate an array of years from 2010 to 2018
-
-    /*
-    const sliderWidth = 600; // Set the width of the slider container
-    const sliderHeight = 80; // Set the height of the slider container
-
-    const xScale = d3.scaleLinear()
-        .domain([0, years.length - 1])
-        .range([0, sliderWidth]);
-
-    const slider_svg = d3.select('#slider-container')
-        .append('svg')
-        .attr('width', sliderWidth)
-        .attr('height', sliderHeight);
-
-    // Add year marks (black rectangles on top)
-    slider_svg.selectAll('.year-mark')
-        .data(years)
-        .enter().append('rect')
-        .attr('class', 'year-mark')
-        .attr('x', (d) => xScale(d) - 1)
-        .attr('y', 0)
-        .attr('width', 2)
-        .attr('height', sliderHeight)
-        .on('click', (event, d) => updateSlider(d));
-
-    // Add slider (gray rectangle)
-    const slider = slider_svg.append('rect')
-        .attr('class', 'slider')
-        .attr('x', 0)
-        .attr('y', 20)
-        .attr('width', sliderWidth)
-        .attr('height', 40)
-        .style('cursor', 'pointer') // Change cursor on the slider for interaction
-        .call(
-            d3.drag()
-                .on('start.interrupt', function () {
-                    slider.interrupt();
-                })
-                .on('start drag', function (event) {
-                    const index = Math.round(xScale.invert(event.x / sliderWidth * xScale.range()[1]));
-                    updateSlider(years[index]);
-                })
-        );
-
-    // Add button to move to the next year (as a circle)
-    const moveButton = slider_svg.append('circle')
-        .attr('class', 'move-button')
-        .attr('r', 10)
-        .attr('cy', 40)
-        .on('click', function () {
-            const currentYear = parseInt(d3.select('#year-value').text());
-            const nextYear = currentYear < 2018 ? currentYear + 1 : 2010;
-            updateSlider(nextYear);
-        });
-
-    function updateSlider(selectedYear) {
-        d3.select('#year-value').text(selectedYear);
-        // Move the button to the corresponding year mark
-        const buttonX = xScale(selectedYear);
-        moveButton.attr('cx', buttonX);
-    } */
+    const input = document.querySelector("#slider");
+    const value = document.querySelector("#value");
+    value.textContent = "2017"
+    input.addEventListener("input", (event) => {
+      value.textContent = event.target.value;
+      console.log(event.target.value)
+    });
+    
     // YEAR SLIDER END
 
     const slider = d3.select('#slider-container').append('input')
