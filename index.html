@@ -74,257 +74,189 @@
 
     var mapLayer = g.append('g').classed('map-layer', true);
 
-    const staten_island = [-74.05073426497877, 40.56639475864599]
+
 
     d3.json('nyc.geojson')
       .then(function (mapData) {
         d3.json('OLD_average_sale_prices.json')
           .then(function (salesPriceData) {
 
-            d3.csv('Rat_Sightings.csv').then(function (data) {
-              // RAT SIGHTINGS 
+            
+            
+        const features = mapData.features;
+        
+        const allPrices = Object.keys(salesPriceData)
+        .map(v => Object.keys(salesPriceData[v])
+        .map(k => Number(salesPriceData[v][k]))).flat()
+        
+        const priceExtent = d3.extent(allPrices)
+        const colors = Object.values(colorMap)
+        const colorScale = d3.scaleQuantile(d3.schemeBlues[6].slice(1)).domain(allPrices)
 
-              let rat_sightings_2010 = {}
-              let rat_sightings_2011 = {}
-              let rat_sightings_2012 = {}
-              let rat_sightings_2013 = {}
-              let rat_sightings_2014 = {}
-              let rat_sightings_2015 = {}
-              let rat_sightings_2016 = {}
-              let rat_sightings_2017 = {}
-
-              data.forEach(function (data) {
-                // 2010
-                if (data['Created Date'].includes('2010')) {
-                  if (data['Borough'] in rat_sightings_2010) {
-                    rat_sightings_2010[data['Borough']] = rat_sightings_2010[data['Borough']] + 1
-                  }
-                  else {
-                    rat_sightings_2010[data['Borough']] = 1
-                    console.log("a string", data['Borough'])
-                  }
-                }
-                // 2011
-                if (data['Created Date'].includes('2011')) {
-                  if (data['Borough'] in rat_sightings_2011) {
-                    rat_sightings_2011[data['Borough']] = rat_sightings_2011[data['Borough']] + 1
-                  }
-                  else {
-                    rat_sightings_2011[data['Borough']] = 1
-                  }
-                }
-                // 2012
-                if (data['Created Date'].includes('2012')) {
-                  if (data['Borough'] in rat_sightings_2012) {
-                    rat_sightings_2012[data['Borough']] = rat_sightings_2012[data['Borough']] + 1
-                  }
-                  else {
-                    rat_sightings_2012[data['Borough']] = 1
-                  }
-                }
-                // 2013
-                if (data['Created Date'].includes('2013')) {
-                  if (data['Borough'] in rat_sightings_2013) {
-                    rat_sightings_2013[data['Borough']] = rat_sightings_2013[data['Borough']] + 1
-                  }
-                  else {
-                    rat_sightings_2013[data['Borough']] = 1
-                  }
-                }
-                // 2014
-                if (data['Created Date'].includes('2014')) {
-                  if (data['Borough'] in rat_sightings_2014) {
-                    rat_sightings_2014[data['Borough']] = rat_sightings_2014[data['Borough']] + 1
-                  }
-                  else {
-                    rat_sightings_2014[data['Borough']] = 1
-                  }
-                }
-                // 2015
-                if (data['Created Date'].includes('2015')) {
-                  if (data['Borough'] in rat_sightings_2015) {
-                    rat_sightings_2015[data['Borough']] = rat_sightings_2015[data['Borough']] + 1
-                  }
-                  else {
-                    rat_sightings_2015[data['Borough']] = 1
-                  }
-                }
-                // 2016
-                if (data['Created Date'].includes('2016')) {
-                  if (data['Borough'] in rat_sightings_2016) {
-                    rat_sightings_2016[data['Borough']] = rat_sightings_2016[data['Borough']] + 1
-                  }
-                  else {
-                    rat_sightings_2016[data['Borough']] = 1
-                  }
-                }
-                // 2017
-                if (data['Created Date'].includes('2017')) {
-                  if (data['Borough'] in rat_sightings_2017) {
-                    rat_sightings_2017[data['Borough']] = rat_sightings_2017[data['Borough']] + 1
-                  }
-                  else {
-                    rat_sightings_2017[data['Borough']] = 1
-                  }
-                }
-
-
-              });
-
-              console.log(rat_sightings_2010)
-              console.log(rat_sightings_2011)
-              console.log(rat_sightings_2012)
-              console.log(rat_sightings_2013)
-              console.log(rat_sightings_2014)
-              console.log(rat_sightings_2015)
-              console.log(rat_sightings_2016)
-              console.log(rat_sightings_2017)
-              let curr_rat_sightings = rat_sightings_2017
-              if (value.textContent == '2010') {
-                curr_rat_sightings = rat_sightings_2010
-              }
-              if (value.textContent == '2011') {
-                curr_rat_sightings = rat_sightings_2011
-              }
-              if (value.textContent == '2012') {
-                curr_rat_sightings = rat_sightings_2012
-              }
-              if (value.textContent == '2013') {
-                curr_rat_sightings = rat_sightings_2013
-              }
-              if (value.textContent == '2014') {
-                curr_rat_sightings = rat_sightings_2014
-              }
-              if (value.textContent == '2015') {
-                curr_rat_sightings = rat_sightings_2015
-              }
-              if (value.textContent == '2016') {
-                curr_rat_sightings = rat_sightings_2016
-              }
-              if (value.textContent == '2017') {
-                curr_rat_sightings = rat_sightings_2017
-              }
-
-
-              // END OF RATS
-
-
-              const features = mapData.features;
-
-              const allPrices = Object.keys(salesPriceData)
-                .map(v => Object.keys(salesPriceData[v])
-                  .map(k => Number(salesPriceData[v][k]))).flat()
-
-              const priceExtent = d3.extent(allPrices)
-              const colors = Object.values(colorMap)
-              const colorScale = d3.scaleQuantile(d3.schemeBlues[6].slice(1)).domain(allPrices)
-
-              input.addEventListener("input", (event) => {
-                const year = event.target.value
-                value.textContent = year;
-                drawHeatMap(year)
-              });
-
-              mapLayer
-                .selectAll('path')
-                .data(features)
-                .join('path')
-                .attr('d', pathGenerator)
-                .on('mouseover', function (_, d) { mouseover(d, this) })
-                .on('mouseout', function (_, d) { mouseout(d, this) })
-                .on('click', function (_, d) { mouseclick(d, this) })
-                .style('cursor', 'pointer')
-
-
-              const legendGroup = svg.append("g")
-                .attr("transform", `translate(${width * 4 / 5}, ${height * 3 / 4})`)
-
-
-              const legendText = [priceExtent[0]].concat(colorScale.quantiles())
-
-
-              legendGroup.selectAll("circle")
-                .data(legendText)
-                .join('circle')
-                .attr('cy', (_, i) => -i * 30)
-                .attr('cx', 0)
-                .attr('r', 5)
-                .attr('fill', v => colorScale(v))
-
-              legendGroup.selectAll("text")
-                .data(legendText)
-                .join('text')
-                .attr('y', (_, i) => -(i * 30) + 5)
-                .attr('x', 20)
-                .attr('r', 5)
-                .text(v => d3.format('$,.0f')(v) + " >")
-                .style("font-family", "sans-serif")
-                .style("font-weight", "bold")
-                .style("fill", 'black')
-
-              drawHeatMap(startYear)
-
-
-              function drawHeatMap(currentYear) {
-
-                let currentYearData = []
-
-                Object.keys(colorMap).forEach(k => {
-                  currentYearData[k] = salesPriceData[k][currentYear]
-                  colorMap[k] = colorScale(currentYearData[k])
-                })
-
-                mapLayer.selectAll('path')
-                  .style('fill', f => colorScale(currentYearData[f.properties.boro_name]))
-
-              }
-
-              function mouseclick(d, path) {
-                const boro = d.properties.boro_name
-
-                const [centerX, centerY] = pathGenerator.centroid(d)
-                const zoomScale = 2
-                const unfocusBoro = focusedBoro == boro
-
-                const transformStr = unfocusBoro
-                  ? 'translate(0,0)'
-                  : `translate(${width / 2},${height / 2})scale(${zoomScale})translate(${-centerX},${-centerY})`
-
-                mapLayer.transition()
-                  .duration(750)
-                  .attr('transform', transformStr)
-
-                focusedBoro = unfocusBoro ? null : boro
-              }
-
-
-
-              console.log('staten island projection', typeof curr_rat_sightings, Object.keys(curr_rat_sightings))
-              console.log(projection(staten_island))
-              // staten island rat bubble ?? 
-              mapLayer
-                .append('circle')
-                .attr('cx', projection(staten_island)[0])
-                .attr('cy', projection(staten_island)[1])
-                .attr('r', curr_rat_sightings['STATEN ISLAND'] / 50)
-                .style('fill', 'red')
-                .style('opacity', '0.5')
-                .style('stroke', 'red');
-
-            });
-
-
-
-
-
+        
+        mapLayer
+        .selectAll('path')
+        .data(features)
+        .join('path')
+        .attr('d', pathGenerator)
+        .on('mouseover', function (_, d) { mouseover(d, this) })
+        .on('mouseout', function (_, d) { mouseout(d, this) })
+        .on('click', function (_, d) { mouseclick(d, this) })
+        .style('cursor', 'pointer')
+        
+        
+        const legendGroup = svg.append("g")
+        .attr("transform", `translate(${width * 4 / 5}, ${height * 3 / 4})`)
+        
+        
+        const legendText = [priceExtent[0]].concat(colorScale.quantiles())
+        
+        
+        legendGroup.selectAll("circle")
+        .data(legendText)
+        .join('circle')
+        .attr('cy', (_, i) => -i * 30)
+        .attr('cx', 0)
+        .attr('r', 5)
+        .attr('fill', v => colorScale(v))
+        
+        legendGroup.selectAll("text")
+        .data(legendText)
+        .join('text')
+        .attr('y', (_, i) => -(i * 30) + 5)
+        .attr('x', 20)
+        .attr('r', 5)
+        .text(v => d3.format('$,.0f')(v) + " >")
+        .style("font-family", "sans-serif")
+        .style("font-weight", "bold")
+        .style("fill", 'black')
+        
+        drawHeatMap(startYear)
+        
+        
+        function drawHeatMap(currentYear) {
+          
+          let currentYearData = []
+          
+          Object.keys(colorMap).forEach(k => {
+            currentYearData[k] = salesPriceData[k][currentYear]
+            colorMap[k] = colorScale(currentYearData[k])
           })
-          .catch(function (error) {
-            console.error('Error loading GeoJSON:', error);
+          
+          mapLayer.selectAll('path')
+          .style('fill', f => colorScale(currentYearData[f.properties.boro_name]))
+          
+        }
+        
+        function mouseclick(d, path) {
+          const boro = d.properties.boro_name
+          console.log("in mouseClick", boro)
+          const [centerX, centerY] = pathGenerator.centroid(d)
+          console.log(centerX, centerY)
+          const zoomScale = 2
+          const unfocusBoro = focusedBoro == boro
+          
+          const transformStr = unfocusBoro
+          ? 'translate(0,0)'
+          : `translate(${width / 2},${height / 2})scale(${zoomScale})translate(${-centerX},${-centerY})`
+          
+          mapLayer.transition()
+          .duration(750)
+          .attr('transform', transformStr)
+          
+          focusedBoro = unfocusBoro ? null : boro
+        }
+        
+        // RAT FUNCTIONS 
+        d3.csv('Rat_Sightings.csv').then(function (data) {
+          
+          let rat_sightings_by_year = {
+            '2010': {},  
+            '2011': {},  
+            '2012': {},  
+            '2013': {},  
+            '2014': {},  
+            '2015': {},  
+            '2016': {},  
+            '2017': {},  
+          }
+          
+          data.forEach(function (data) {
+            // zip code
+            zip_code = data['Incident Zip']
+            year_key = ''
+            for (let year in rat_sightings_by_year){
+              if (data['Created Date'].includes(year)) {
+                year_key = year
+              }
+              
+            }
+            borough_name = data['Borough'] 
+            if (borough_name in rat_sightings_by_year[year_key]) {
+              rat_sightings_by_year[year_key][borough_name] = rat_sightings_by_year[year_key][borough_name] + 1
+            }
+            else {
+              rat_sightings_by_year[year_key][borough_name] = 1
+            }
+            
+            
           });
+          
+          let curr_rat_sightings = rat_sightings_by_year['2017']
+          console.log(rat_sightings_by_year)
+          
+          borough_centroid = {
+            'STATEN ISLAND' : [308.69135817244097, 405.01656413868227],
+            'BROOKLYN' : [470.1010548370231, 338.883373664164], 
+            'QUEENS': [571.6402480111927, 273.71251550545253],
+            'MANHATTAN': [454.9429237747376, 201.57378884897776],
+            'BRONX':[533.9865047423267, 123.38419034497619]
+          }
+
+          for (let centroid in borough_centroid){
+            centroid_coords = borough_centroid[centroid]
+            console.log(typeof centroid, centroid)
+            console.log(curr_rat_sightings[centroid])
+            mapLayer
+            .append('circle')
+            .attr('id', centroid.split(" ")[0])
+            .attr('cx', centroid_coords[0])
+            .attr('cy', centroid_coords[1])
+            .attr('r', curr_rat_sightings[centroid] / 50)
+            .style('fill', 'red')
+            .style('opacity', '0.3')
+            .style('stroke', 'red');
+          }
+            
+
+          function drawRatBubbles(year){
+            console.log("drawRatBubles change", year, typeof year)
+            for (let centroid in borough_centroid){
+              mapLayer
+                .select('#' + centroid.split(" ")[0])
+                .attr('r', rat_sightings_by_year[year][centroid] / 45)
+            }
+          }
+     
+          // END OF RATS
+          input.addEventListener("input", (event) => {
+            const year = event.target.value
+            value.textContent = year;
+            drawHeatMap(year)
+            drawRatBubbles(year)
+          });
+        });
+      
+          
+          
+        })
+        .catch(function (error) {
+          console.error('Error loading GeoJSON:', error);
+        });
       }
       )
-
-    function mouseover(d, path) {
+      
+      function mouseover(d, path) {
       // Highlight hovered borough with orange
       //console.log(d3.select(thing))
       d3.select(path).style('fill', 'rgba(255, 165, 0, 0.3)');
