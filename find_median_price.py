@@ -21,7 +21,6 @@ for borough in boroughs:
             grouped_data = df[df['Zip Code'] != 0].groupby('Zip Code')['Sale Price'].median().reset_index()
             median_prices_dict[borough][str(year)] = grouped_data.to_dict(orient='records')
 
-# Save the dictionary to a JSON file
 with open('median_prices_by_zip.json', 'w') as json_file:
     json.dump(median_prices_dict, json_file, indent=2)
 
