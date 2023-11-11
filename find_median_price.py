@@ -23,4 +23,4 @@ for borough in boroughs:
 with open('median_prices_by_zip.json', 'w') as json_file:
     json.dump(median_prices_dict, json_file, indent=2)
 
-print('Median prices by zip code saved to median_prices_by_zip.json')
+print('median prices by zip code saved to median_prices_by_zip.json')
