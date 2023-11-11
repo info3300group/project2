@@ -16,6 +16,8 @@ for borough in boroughs:
         if os.path.exists(file_path):
             df = pd.read_csv(file_path)
 
+            df = df[df['Sale Price'] != 0]
+
             grouped_data = df[df['Zip Code'] != 0].groupby('Zip Code')['Sale Price'].median().reset_index()
             median_prices_dict[borough][str(year)] = grouped_data.to_dict(orient='records')
 
