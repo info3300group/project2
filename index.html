@@ -305,7 +305,7 @@
                 .attr(
                   "cy",
                   (ratCount, i) =>
-                    -(i * (30 + ratCount / 250) + 10 + ratCount / 1000)
+                    -(i * (30 + ratCount / 170) + 10 + ratCount / 1000)
                 )
                 .attr("cx", (ratCount, i) => -ratCount / 125)
                 .attr("r", (ratCount) => {
@@ -319,7 +319,7 @@
                 .selectAll("text")
                 .data(legendRatsCounts)
                 .join("text")
-                .attr("y", (ratCount, i) => -(i * (30 + ratCount / 250) + 5))
+                .attr("y", (ratCount, i) => -(i * (30 + ratCount / 170) + 5))
                 .attr("x", 20)
                 .attr("r", 5)
                 .text((v) => {
