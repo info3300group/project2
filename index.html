@@ -121,6 +121,7 @@
 
     var svg = d3.select("svg").attr("width", width).attr("height", height);
     let focusedBoro = null;
+    let focusedZip = null;
     let currentYear = startYear;
     var g = svg.append("g");
 
@@ -235,19 +236,21 @@
                 }
 
                 function mouseclick(d, path) {
-                  const boro = zipData[d.properties.ZIPCODE];
+                  const zip = d.properties.ZIPCODE
+                  const boro = zipData[zip];
                   const [centerX, centerY] = pathGenerator.centroid(d);
                   const zoomScale = 2;
-                  const unfocusBoro = focusedBoro == boro;
+                  const unfocus = focusedZip == zip;
 
-                  const transformStr = unfocusBoro
+                  const transformStr = unfocus
                     ? "translate(0,0)"
                     : `translate(${width / 2},${height / 2
                     })scale(${zoomScale})translate(${-centerX},${-centerY})`;
 
                   mapLayer.transition().duration(750).attr("transform", transformStr);
 
-                  focusedBoro = unfocusBoro ? null : boro;
+                  focusedBoro = unfocus ? null : boro;
+                  focusedZip = unfocus ? null : zip;
                   drawHeatMap()
                 }
 
@@ -402,7 +405,7 @@
         const boro = zipData[zip];
         const color = colorMap[boro];
         boroughName.text(focusedBoro ? focusedBoro : "");
-        populationText.text(focusedBoro ? d.properties.POPULATION : "");
+        populationText.text("");
         //console.log(mouseout, "color");
 
         d3.select(path).style("fill", focusedBoro ? colorZipMap[zip] : color); // Set fill back to the original borough color
