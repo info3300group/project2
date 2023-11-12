@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <meta charset="utf-8" />
 <style>
+  .Bronx {
+    fill: #add8e6; /* Light Blue */
+  }
+
+  .Brooklyn {
+    fill: #4169e1; /* Royal Blue */
+  }
+
+  .Manhattan {
+    fill: #00bfff; /* Deep Sky Blue */
+  }
+
+  .Queens {
+    fill: #1e90ff; /* Dodger Blue */
+  }
+
+  .StatenIsland {
+    fill: #6495ed; /* Cornflower Blue */
+  }
   .map-layer {
     fill: #fff;
     stroke: #aaa;
@@ -44,7 +63,14 @@
     Currently the year is: <output id="value"></output>
   </label>
   <br />
-  <input id="slider" type="range" min="2010" max="2017" list="markers" value="2017" />
+  <input
+    id="slider"
+    type="range"
+    min="2010"
+    max="2017"
+    list="markers"
+    value="2017"
+  />
 
   <datalist id="markers">
     <option value="2010"></option>
@@ -96,216 +122,247 @@
 
     var mapLayer = g.append("g").classed("map-layer", true);
 
-    d3.json("NYC_Merged_Borough+ZipCodes.geojson").then(function (mapData) {
-      d3.json("OLD_average_sale_prices.json")
-        .then(function (salesPriceData) {
-          const features = mapData.features;
+    d3.json("zip_to_borough.json").then(function (zipData) {
+      d3.json("zip_code.geojson").then(function (mapData) {
+        //console.log("Map Data:", mapData);
 
-          const allPrices = Object.keys(salesPriceData)
-            .map((v) =>
-              Object.keys(salesPriceData[v]).map((k) => Number(salesPriceData[v][k]))
-            )
-            .flat();
+        d3.json("OLD_average_sale_prices.json")
+          .then(function (salesPriceData) {
+            //console.log("Sales Price Data:", salesPriceData); // Log the sales price data
 
-          const priceExtent = d3.extent(allPrices);
-          const colors = Object.values(colorMap);
-          const colorScale = d3.scaleQuantile(d3.schemeBlues[6].slice(1)).domain(allPrices);
+            const features = mapData.features;
 
-          mapLayer
-            .selectAll("path")
-            .data(features)
-            .join("path")
-            .attr("d", pathGenerator)
-            .on("mouseover", function (_, d) {
-              mouseover(d, this);
-            })
-            .on("mouseout", function (_, d) {
-              mouseout(d, this);
-            })
-            .on("click", function (_, d) {
-              mouseclick(d, this);
-            })
-            .style("cursor", "pointer");
+            const allPrices = Object.keys(salesPriceData)
+              .map((v) =>
+                Object.keys(salesPriceData[v]).map((k) =>
+                  Number(salesPriceData[v][k])
+                )
+              )
+              .flat();
 
-          const legendGroup = svg
-            .append("g")
-            .attr("transform", `translate(${(width * 4) / 5}, ${(height * 3) / 4})`);
-
-          const legendText = [priceExtent[0]].concat(colorScale.quantiles());
-
-          legendGroup
-            .selectAll("circle")
-            .data(legendText)
-            .join("circle")
-            .attr("cy", (_, i) => -i * 30)
-            .attr("cx", 0)
-            .attr("r", 5)
-            .attr("fill", (v) => colorScale(v));
-
-          legendGroup
-            .selectAll("text")
-            .data(legendText)
-            .join("text")
-            .attr("y", (_, i) => -(i * 30) + 5)
-            .attr("x", 20)
-            .attr("r", 5)
-            .text((v) => d3.format("$,.0f")(v) + " >")
-            .style("font-family", "sans-serif")
-            .style("font-weight", "bold")
-            .style("fill", "black");
-
-          drawHeatMap(startYear);
-
-          function drawHeatMap(currentYear) {
-            let currentYearData = [];
-            Object.keys(colorMap).forEach((k) => {
-              currentYearData[k] = salesPriceData[k][currentYear];
-              colorMap[k] = colorScale(currentYearData[k]);
-            });
+            const priceExtent = d3.extent(allPrices);
+            const colors = Object.values(colorMap);
+            const colorScale = d3
+              .scaleQuantile(d3.schemeBlues[6].slice(1))
+              .domain(allPrices);
 
             mapLayer
               .selectAll("path")
-              .transition()
-              .duration(700)
-              .style("fill", (f) => colorScale(currentYearData[f.properties.boro_name]));
-          }
-
-          // RAT FUNCTIONS
-          d3.csv("Rat_Sightings.csv").then(function (data) {
-            let rat_sightings_by_year = {
-              2010: {},
-              2011: {},
-              2012: {},
-              2013: {},
-              2014: {},
-              2015: {},
-              2016: {},
-              2017: {},
-            };
-
-            data.forEach(function (data) {
-              // zip code
-              zip_code = data["Incident Zip"];
-              year_key = "";
-              for (let year in rat_sightings_by_year) {
-                if (data["Created Date"].includes(year)) {
-                  year_key = year;
-                }
-              }
-              borough_name = data["Borough"];
-              if (borough_name in rat_sightings_by_year[year_key]) {
-                rat_sightings_by_year[year_key][borough_name] =
-                  rat_sightings_by_year[year_key][borough_name] + 1;
-              } else {
-                rat_sightings_by_year[year_key][borough_name] = 1;
-              }
-            });
-
-            let curr_rat_sightings = rat_sightings_by_year["2017"];
-            console.log(rat_sightings_by_year);
-
-            borough_centroid = {
-              "STATEN ISLAND": [308.69135817244097, 405.01656413868227],
-              BROOKLYN: [470.1010548370231, 338.883373664164],
-              QUEENS: [571.6402480111927, 273.71251550545253],
-              MANHATTAN: [454.9429237747376, 201.57378884897776],
-              BRONX: [533.9865047423267, 123.38419034497619],
-            };
-
-            for (let centroid in borough_centroid) {
-              centroid_coords = borough_centroid[centroid];
-              console.log(typeof centroid, centroid);
-              console.log(curr_rat_sightings[centroid]);
-              mapLayer
-                .append("circle")
-                .attr("id", centroid.split(" ")[0])
-                .attr("cx", centroid_coords[0])
-                .attr("cy", centroid_coords[1])
-                .attr("r", curr_rat_sightings[centroid] / 50)
-                .style("fill", "red")
-                .style("opacity", "0.3")
-                .style("stroke", "red")
-                .style("pointer-events", "none");
-            }
-
-            function drawRatBubbles(year) {
-              console.log("drawRatBubles change", year, typeof year);
-              for (let centroid in borough_centroid) {
-                mapLayer
-                  .select("#" + centroid.split(" ")[0])
-                  .transition()
-                  .duration(700)
-                  .attr("r", rat_sightings_by_year[year][centroid] / 45);
-              }
-            }
-
-            const ratLegendGroup = svg
-              .append("g")
-              .attr("transform", `translate(${width * 4 / 5}, ${height * 1 / 2})`);
-
-            legendRatsCounts = [500, 1000, 3000, 5000];
-            ratLegendGroup
-              .selectAll("circle")
-              .data(legendRatsCounts)
-              .join("circle")
-              .attr("cy", (ratCount, i) => -(i * (30 + (ratCount / 250)) + 10 + (ratCount / 1000)))
-              .attr("cx", (ratCount, i) => -ratCount / 125)
-              .attr("r", (ratCount) => {
-                console.log(ratCount);
-                return ratCount / 125;
+              .data(features)
+              .join("path")
+              .attr("d", pathGenerator)
+              .on("mouseover", function (_, d) {
+                mouseover(d, this);
               })
-              .style("fill", "red")
-              .style("opacity", "0.3")
-              .style("stroke", "red");
+              .on("mouseout", function (_, d) {
+                mouseout(d, this);
+              })
+              .on("click", function (_, d) {
+                mouseclick(d, this);
+              })
+              .style("cursor", "pointer");
 
-            ratLegendGroup
+            const legendGroup = svg
+              .append("g")
+              .attr(
+                "transform",
+                `translate(${(width * 4) / 5}, ${(height * 3) / 4})`
+              );
+
+            const legendText = [priceExtent[0]].concat(colorScale.quantiles());
+
+            legendGroup
+              .selectAll("circle")
+              .data(legendText)
+              .join("circle")
+              .attr("cy", (_, i) => -i * 30)
+              .attr("cx", 0)
+              .attr("r", 5)
+              .attr("fill", (v) => colorScale(v));
+
+            legendGroup
               .selectAll("text")
-              .data(legendRatsCounts)
+              .data(legendText)
               .join("text")
-              .attr("y", (ratCount, i) => -(i * (30 + (ratCount / 250)) + 5))
+              .attr("y", (_, i) => -(i * 30) + 5)
               .attr("x", 20)
               .attr("r", 5)
-              .text((v) => {
-                return v + " Rat Sightings";
-              })
+              .text((v) => d3.format("$,.0f")(v) + " >")
               .style("font-family", "sans-serif")
               .style("font-weight", "bold")
               .style("fill", "black");
 
-            input.addEventListener("input", (event) => {
-              const year = event.target.value;
-              value.textContent = year;
-              drawHeatMap(year);
-              drawRatBubbles(year);
+            drawHeatMap(startYear);
+
+            function drawHeatMap(currentYear) {
+              let currentYearData = [];
+              Object.keys(colorMap).forEach((k) => {
+                currentYearData[k] = salesPriceData[k][currentYear];
+                colorMap[k] = colorScale(currentYearData[k]);
+              });
+
+              mapLayer
+                .selectAll("path")
+                .transition()
+                .duration(700)
+                .style("fill", (f) =>
+                  colorScale(currentYearData[f.properties.boro_name])
+                );
+            }
+
+            // RAT FUNCTIONS
+            d3.csv("Rat_Sightings.csv").then(function (data) {
+              let rat_sightings_by_year = {
+                2010: {},
+                2011: {},
+                2012: {},
+                2013: {},
+                2014: {},
+                2015: {},
+                2016: {},
+                2017: {},
+              };
+
+              function colorZipCodesByBorough() {
+                mapLayer
+                  .selectAll("path")
+                  .transition()
+                  .duration(700)
+                  .style("fill", function (f) {
+                    const zipCode = f.properties.ZIPCODE;
+                    const boroughName = zipData[zipCode];
+                    return colorMap[boroughName];
+                  });
+              }
+              colorZipCodesByBorough();
+
+              data.forEach(function (data) {
+                // zip code
+                zip_code = data["Incident Zip"];
+                year_key = "";
+                for (let year in rat_sightings_by_year) {
+                  if (data["Created Date"].includes(year)) {
+                    year_key = year;
+                  }
+                }
+                borough_name = data["Borough"];
+                if (borough_name in rat_sightings_by_year[year_key]) {
+                  rat_sightings_by_year[year_key][borough_name] =
+                    rat_sightings_by_year[year_key][borough_name] + 1;
+                } else {
+                  rat_sightings_by_year[year_key][borough_name] = 1;
+                }
+              });
+
+              let curr_rat_sightings = rat_sightings_by_year["2017"];
+
+              borough_centroid = {
+                "STATEN ISLAND": [308.69135817244097, 405.01656413868227],
+                BROOKLYN: [470.1010548370231, 338.883373664164],
+                QUEENS: [571.6402480111927, 273.71251550545253],
+                MANHATTAN: [454.9429237747376, 201.57378884897776],
+                BRONX: [533.9865047423267, 123.38419034497619],
+              };
+
+              for (let centroid in borough_centroid) {
+                centroid_coords = borough_centroid[centroid];
+                mapLayer
+                  .append("circle")
+                  .attr("id", centroid.split(" ")[0])
+                  .attr("cx", centroid_coords[0])
+                  .attr("cy", centroid_coords[1])
+                  .attr("r", curr_rat_sightings[centroid] / 50)
+                  .style("fill", "red")
+                  .style("opacity", "0.3")
+                  .style("stroke", "red")
+                  .style("pointer-events", "none");
+              }
+
+              function drawRatBubbles(year) {
+                //console.log("drawRatBubles change", year, typeof year);
+                for (let centroid in borough_centroid) {
+                  mapLayer
+                    .select("#" + centroid.split(" ")[0])
+                    .transition()
+                    .duration(700)
+                    .attr("r", rat_sightings_by_year[year][centroid] / 45);
+                }
+              }
+
+              const ratLegendGroup = svg
+                .append("g")
+                .attr(
+                  "transform",
+                  `translate(${(width * 4) / 5}, ${(height * 1) / 2})`
+                );
+
+              legendRatsCounts = [500, 1000, 3000, 5000];
+              ratLegendGroup
+                .selectAll("circle")
+                .data(legendRatsCounts)
+                .join("circle")
+                .attr(
+                  "cy",
+                  (ratCount, i) =>
+                    -(i * (30 + ratCount / 250) + 10 + ratCount / 1000)
+                )
+                .attr("cx", (ratCount, i) => -ratCount / 125)
+                .attr("r", (ratCount) => {
+                  return ratCount / 125;
+                })
+                .style("fill", "red")
+                .style("opacity", "0.3")
+                .style("stroke", "red");
+
+              ratLegendGroup
+                .selectAll("text")
+                .data(legendRatsCounts)
+                .join("text")
+                .attr("y", (ratCount, i) => -(i * (30 + ratCount / 250) + 5))
+                .attr("x", 20)
+                .attr("r", 5)
+                .text((v) => {
+                  return v + " Rat Sightings";
+                })
+                .style("font-family", "sans-serif")
+                .style("font-weight", "bold")
+                .style("fill", "black");
+
+              input.addEventListener("input", (event) => {
+                const year = event.target.value;
+                value.textContent = year;
+                drawHeatMap(year);
+                drawRatBubbles(year);
+              });
             });
+          })
+          .catch(function (error) {
+            console.error("Error loading GeoJSON:", error);
           });
-        })
-        .catch(function (error) {
-          console.error("Error loading GeoJSON:", error);
-        });
-    });
-
-    function mouseover(d, path) {
-      // Highlight hovered borough with orange
-      //console.log(d3.select(thing))
-      d3.select(path).style("fill", "rgba(255, 165, 0, 0.3)");
-      boroughName
-        .text(d.properties.boro_name)
-        .attr("font-size", "42px")
-        .style("font-family", "Arial");
-    }
-
-    // reset borough color and text
-    function mouseout(d, path) {
-      const boro = d.properties.boro_name;
-      boroughName.text(focusedBoro ? focusedBoro : "");
-
-      d3.select(path).style("fill", function (d) {
-        return colorMap[boro];
       });
-    }
 
+      function mouseover(d, path) {
+        // Highlight hovered borough with orange
+        //console.log(d3.select(thing))
+        d3.select(path).style("fill", "rgba(255, 165, 0, 0.3)");
+        boroughName
+          .text(d.properties.boro_name)
+          .attr("font-size", "42px")
+          .style("font-family", "Arial");
+        const zipCode = d.properties.ZIPCODE;
+        //.log("zipcode is: ", zipCode)
+      }
+      function mouseout(d, path) {
+        const zipCode = d.properties.ZIPCODE;
+        const boroughName = zipData[zipCode];
+        const color = colorMap[boroughName];
+        //console.log(mouseout, "color");
+
+        d3.select(path).style("fill", color); // Set fill back to the original borough color
+      }
+    });
     var boroughName = g.append("text").attr("x", 20).attr("y", 45);
+
     //MAP DRAWING END
   </script>
 </body>
