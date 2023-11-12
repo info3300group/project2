@@ -10,14 +10,54 @@
     width: 80%;
     margin: 20px auto;
     position: relative;
+    display: grid;
+    place-items: center;
   }
+
+  #slider{
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+    margin: auto;
+    display: block;
+    font-family: sans-serif;
+  }
+
+  #slider-label{
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+    margin: auto;
+    display: block;
+    font-family: sans-serif;
+  }
+
+  #value{
+    font-weight: bold;
+  }
+
 </style>
 
 <body>
   <svg></svg>
   <div id="slider-container"></div>
+<<<<<<< HEAD
   <label for="temp">Currently the year is: <output id="value"></output> </label><br />
   <input id="slider" type="range" min="2010" max="2017" list="markers" value="2017" />
+=======
+  <div id="slider-container"></div>
+  <label for="temp" id = "slider-label">Currently the year is: <output id="value"></output> </label
+  ><br />
+  <input
+    id="slider"
+    type="range"
+    min="2010"
+    max="2017"
+    list="markers"
+    value="2017"
+  />
+  </div>
+>>>>>>> 0e6e964 (legend for rats)
   <datalist id="markers">
     <option value="2010"></option>
     <option value="2011"></option>
@@ -142,16 +182,97 @@
               currentYearData[k] = salesPriceData[k][currentYear];
               colorMap[k] = colorScale(currentYearData[k]);
             });
+        
+        function mouseclick(d, path) {
+          const boro = d.properties.boro_name
+          console.log("in mouseClick", boro)
+          const [centerX, centerY] = pathGenerator.centroid(d)
+          console.log(centerX, centerY)
+          const zoomScale = 2
+          const unfocusBoro = focusedBoro == boro
+          
+          const transformStr = unfocusBoro
+          ? 'translate(0,0)'
+          : `translate(${width / 2},${height / 2})scale(${zoomScale})translate(${-centerX},${-centerY})`
+          
+          mapLayer.transition()
+          .duration(750)
+          .attr('transform', transformStr)
+          
+          focusedBoro = unfocusBoro ? null : boro
+        }
+        
+        // RAT FUNCTIONS 
+
+        // rat legend 
+
+        // rat data
+        d3.csv('Rat_Sightings.csv').then(function (data) {
+          
+          let rat_sightings_by_year = {
+            '2010': {},  
+            '2011': {},  
+            '2012': {},  
+            '2013': {},  
+            '2014': {},  
+            '2015': {},  
+            '2016': {},  
+            '2017': {},  
+          }
+          
+          data.forEach(function (data) {
+            // zip code
+            zip_code = data['Incident Zip']
+            year_key = ''
+            for (let year in rat_sightings_by_year){
+              if (data['Created Date'].includes(year)) {
+                year_key = year
+              }
+              
+            }
+            borough_name = data['Borough'] 
+            if (borough_name in rat_sightings_by_year[year_key]) {
+              rat_sightings_by_year[year_key][borough_name] = rat_sightings_by_year[year_key][borough_name] + 1
+            }
+            else {
+              rat_sightings_by_year[year_key][borough_name] = 1
+            }
+            
+            
+          });
+          
+          let curr_rat_sightings = rat_sightings_by_year['2017']
+          console.log(rat_sightings_by_year)
+          
+          borough_centroid = {
+            'STATEN ISLAND' : [308.69135817244097, 405.01656413868227],
+            'BROOKLYN' : [470.1010548370231, 338.883373664164], 
+            'QUEENS': [571.6402480111927, 273.71251550545253],
+            'MANHATTAN': [454.9429237747376, 201.57378884897776],
+            'BRONX':[533.9865047423267, 123.38419034497619]
+          }
 
             mapLayer
+<<<<<<< HEAD
               .selectAll("path")
               .transition()
               .duration(700)
               .style("fill", (f) =>
                 colorScale(currentYearData[f.properties.boro_name])
               );
+=======
+            .append('circle')
+            .attr('id', centroid.split(" ")[0])
+            .attr('cx', centroid_coords[0])
+            .attr('cy', centroid_coords[1])
+            .attr('r', curr_rat_sightings[centroid] / 125)
+            .style('fill', 'red')
+            .style('opacity', '0.3')
+            .style('stroke', 'red');
+>>>>>>> 0e6e964 (legend for rats)
           }
 
+<<<<<<< HEAD
           function mouseclick(d, path) {
             const boro = d.properties.boro_name;
             console.log("in mouseClick", boro);
@@ -246,6 +367,51 @@
               drawHeatMap(year);
               drawRatBubbles(year);
             });
+=======
+          function drawRatBubbles(year){
+            for (let centroid in borough_centroid){
+              console.log("drawRatBubles change",  rat_sightings_by_year[year][centroid])
+              mapLayer
+                .select('#' + centroid.split(" ")[0])
+                .attr('r', rat_sightings_by_year[year][centroid] / 125)
+            }
+          }
+
+        const ratLegendGroup = svg.append("g")
+        .attr("transform", `translate(${width * 4 / 5}, ${height * 1 / 2})`)
+        
+        legendRatsCounts = [500, 1000, 3000, 5000]
+        ratLegendGroup.selectAll("circle")
+        .data(legendRatsCounts)
+        .join('circle')
+        .attr('cy', (ratCount, i) => -(i * (30+(ratCount/250)) + 10 + (ratCount/1000)))
+        .attr('cx', (ratCount, i) => (-ratCount/125))
+        .attr('r', (ratCount) => {
+          console.log(ratCount);
+          return ratCount/125;
+        })
+        .style('fill', 'red')
+        .style('opacity', '0.3')
+        .style('stroke', 'red');
+        
+        ratLegendGroup.selectAll("text")
+        .data(legendRatsCounts)
+        .join('text')
+        .attr('y', (ratCount, i) => -(i * (30+(ratCount/250)) + 5))
+        .attr('x', 20)
+        .attr('r', 5)
+        .text(v => {return v + " Rat Sightings"})
+        .style("font-family", "sans-serif")
+        .style("font-weight", "bold")
+        .style("fill", 'black')
+     
+          // END OF RATS
+          input.addEventListener("input", (event) => {
+            const year = event.target.value
+            value.textContent = year;
+            drawHeatMap(year)
+            drawRatBubbles(year)
+>>>>>>> 0e6e964 (legend for rats)
           });
         })
         .catch(function (error) {
