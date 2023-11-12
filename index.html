@@ -86,7 +86,7 @@
 
     // colors are actually set in colorScale below
     var colorMap = {
-      Bronx: "#ADD8E6", // Light Bluet
+      Bronx: "#ADD8E6", // Light Blue
       Brooklyn: "#4169E1", // Royal Blue
       Manhattan: "#00BFFF", // Deep Sky Blue
       Queens: "#1E90FF", // Dodger Blue
@@ -108,7 +108,7 @@
 
     var mapLayer = g.append("g").classed("map-layer", true);
 
-    d3.json("NYC_Merged_Borough+ZipCodes.geojson").then(function (mapData) {
+    d3.json("nyc.geojson").then(function (mapData) {
       d3.json("OLD_average_sale_prices.json")
         .then(function (salesPriceData) {
           const features = mapData.features;
@@ -122,8 +122,7 @@
             .flat();
 
           const priceExtent = d3.extent(allPrices);
-
-          
+          const colors = Object.values(colorMap);
           const colorScale = d3
             .scaleQuantile(d3.schemeBlues[6].slice(1))
             .domain(allPrices);
