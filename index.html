@@ -16,16 +16,8 @@
 <body>
   <svg></svg>
   <div id="slider-container"></div>
-  <label for="temp">Currently the year is: <output id="value"></output> </label
-  ><br />
-  <input
-    id="slider"
-    type="range"
-    min="2010"
-    max="2017"
-    list="markers"
-    value="2017"
-  />
+  <label for="temp">Currently the year is: <output id="value"></output> </label><br />
+  <input id="slider" type="range" min="2010" max="2017" list="markers" value="2017" />
   <datalist id="markers">
     <option value="2010"></option>
     <option value="2011"></option>
@@ -153,6 +145,8 @@
 
             mapLayer
               .selectAll("path")
+              .transition()
+              .duration(700)
               .style("fill", (f) =>
                 colorScale(currentYearData[f.properties.boro_name])
               );
@@ -168,9 +162,8 @@
 
             const transformStr = unfocusBoro
               ? "translate(0,0)"
-              : `translate(${width / 2},${
-                  height / 2
-                })scale(${zoomScale})translate(${-centerX},${-centerY})`;
+              : `translate(${width / 2},${height / 2
+              })scale(${zoomScale})translate(${-centerX},${-centerY})`;
 
             mapLayer.transition().duration(750).attr("transform", transformStr);
 
@@ -240,6 +233,8 @@
               for (let centroid in borough_centroid) {
                 mapLayer
                   .select("#" + centroid.split(" ")[0])
+                  .transition()
+                  .duration(700)
                   .attr("r", rat_sightings_by_year[year][centroid] / 45);
               }
             }
