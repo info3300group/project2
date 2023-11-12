@@ -205,8 +205,7 @@
                 .selectAll("path")
                 .transition()
                 .duration(700)
-                .style("fill", (f) =>
-                  colorScale(currentYearData[f.properties.boro_name])
+                .style("fill", f => colorScale(currentYearData[zipData[f.properties.ZIPCODE]])
                 );
             }
 
@@ -234,7 +233,6 @@
                     return colorMap[boroughName];
                   });
               }
-              colorZipCodesByBorough();
 
               data.forEach(function (data) {
                 // zip code
@@ -343,7 +341,6 @@
 
       function mouseover(d, path) {
         // Highlight hovered borough with orange
-        console.log(d.properties.boro_name);
         d3.select(path).style("fill", "rgba(255, 165, 0, 0.3)");
         const zipCode = d.properties.ZIPCODE;
         const borough = zipData[zipCode];
