@@ -343,13 +343,18 @@
 
       function mouseover(d, path) {
         // Highlight hovered borough with orange
-        //console.log(d3.select(thing))
+        console.log(d.properties.boro_name);
         d3.select(path).style("fill", "rgba(255, 165, 0, 0.3)");
+        const zipCode = d.properties.ZIPCODE;
+        const borough = zipData[zipCode];
         boroughName
-          .text(d.properties.boro_name)
+          .text(borough)
           .attr("font-size", "42px")
           .style("font-family", "Arial");
-        const zipCode = d.properties.ZIPCODE;
+        populationText
+          .text("Population: " +d.properties.POPULATION)
+          .attr("font-size", "15px")
+          .style("font-family", "Arial");
         //.log("zipcode is: ", zipCode)
       }
       function mouseout(d, path) {
@@ -362,6 +367,7 @@
       }
     });
     var boroughName = g.append("text").attr("x", 20).attr("y", 45);
+    var populationText = g.append("text").attr("x", 20).attr("y", 70);
 
     //MAP DRAWING END
   </script>
