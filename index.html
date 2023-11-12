@@ -94,6 +94,9 @@
     value.textContent = startYear;
     // YEAR SLIDER END
 
+    // BUBBLE SIZE
+    const bubblesize = 100;
+
     // MAP DRAWING AND MOUSE OVER FUNCTIONS
     var width = 960,
       height = 500;
@@ -271,7 +274,7 @@
                   .attr("id", centroid.split(" ")[0])
                   .attr("cx", centroid_coords[0])
                   .attr("cy", centroid_coords[1])
-                  .attr("r", curr_rat_sightings[centroid] / 125)
+                  .attr("r", curr_rat_sightings[centroid] / bubblesize)
                   .style("fill", "red")
                   .style("opacity", "0.3")
                   .style("stroke", "red")
@@ -285,7 +288,7 @@
                     .select("#" + centroid.split(" ")[0])
                     .transition()
                     .duration(700)
-                    .attr("r", rat_sightings_by_year[year][centroid] / 45);
+                    .attr("r", rat_sightings_by_year[year][centroid] / bubblesize);
                 }
               }
 
