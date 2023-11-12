@@ -358,14 +358,33 @@
         //.log("zipcode is: ", zipCode)
       }
       function mouseout(d, path) {
-        const zipCode = d.properties.ZIPCODE;
-        const boroughName = zipData[zipCode];
-        const color = colorMap[boroughName];
+        const boro = zipData[d.properties.ZIPCODE];
+        const color = colorMap[boro];
+        boroughName.text(focusedBoro ? focusedBoro : "");
+        populationText.text(focusedBoro ? d.properties.POPULATION : "");
         //console.log(mouseout, "color");
 
         d3.select(path).style("fill", color); // Set fill back to the original borough color
       }
+      function mouseclick(d, path) {
+        const boro = zipData[d.properties.ZIPCODE];
+        const [centerX, centerY] = pathGenerator.centroid(d);
+        const zoomScale = 2;
+        const unfocusBoro = focusedBoro == boro;
+  
+        const transformStr = unfocusBoro
+          ? "translate(0,0)"
+          : `translate(${width / 2},${height / 2
+          })scale(${zoomScale})translate(${-centerX},${-centerY})`;
+  
+        mapLayer.transition().duration(750).attr("transform", transformStr);
+  
+        focusedBoro = unfocusBoro ? null : boro;
+      }
     });
+
+    
+
     var boroughName = g.append("text").attr("x", 20).attr("y", 45);
     var populationText = g.append("text").attr("x", 20).attr("y", 70);
 
