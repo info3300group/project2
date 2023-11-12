@@ -203,10 +203,6 @@
         }
         
         // RAT FUNCTIONS 
-
-        // rat legend 
-
-        // rat data
         d3.csv('Rat_Sightings.csv').then(function (data) {
           
           let rat_sightings_by_year = {
@@ -253,14 +249,13 @@
           }
 
             mapLayer
-<<<<<<< HEAD
               .selectAll("path")
               .transition()
               .duration(700)
               .style("fill", (f) =>
                 colorScale(currentYearData[f.properties.boro_name])
               );
-=======
+              mapLayer
             .append('circle')
             .attr('id', centroid.split(" ")[0])
             .attr('cx', centroid_coords[0])
@@ -269,10 +264,8 @@
             .style('fill', 'red')
             .style('opacity', '0.3')
             .style('stroke', 'red');
->>>>>>> 0e6e964 (legend for rats)
           }
 
-<<<<<<< HEAD
           function mouseclick(d, path) {
             const boro = d.properties.boro_name;
             console.log("in mouseClick", boro);
@@ -367,7 +360,6 @@
               drawHeatMap(year);
               drawRatBubbles(year);
             });
-=======
           function drawRatBubbles(year){
             for (let centroid in borough_centroid){
               console.log("drawRatBubles change",  rat_sightings_by_year[year][centroid])
@@ -406,19 +398,16 @@
         .style("fill", 'black')
      
           // END OF RATS
-          input.addEventListener("input", (event) => {
+    input.addEventListener("input", (event) => {
             const year = event.target.value
             value.textContent = year;
             drawHeatMap(year)
             drawRatBubbles(year)
->>>>>>> 0e6e964 (legend for rats)
           });
         })
         .catch(function (error) {
           console.error("Error loading GeoJSON:", error);
-        });
-    });
-
+        }));
     function mouseover(d, path) {
       // Highlight hovered borough with orange
       //console.log(d3.select(thing))
