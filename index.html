@@ -309,7 +309,7 @@
                 )
                 .attr("cx", (ratCount, i) => -ratCount / 125)
                 .attr("r", (ratCount) => {
-                  return ratCount / 125;
+                  return ratCount / bubblesize;
                 })
                 .style("fill", "red")
                 .style("opacity", "0.3")
