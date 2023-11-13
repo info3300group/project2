@@ -97,29 +97,64 @@
 
   body {
     background-color: var(--bg-color);
+    font-family: "Baskerville";
   }
+
+  h1{
+    font-weight: normal;
+    font-variant: small-caps;
+    margin-left: 20px;
+  }
+
+  p{
+    font-weight: normal;
+    margin-left: 20px;
+  }
+  strong{
+    font-weight: normal;
+    font-variant: small-caps;
+  }
+
+  svg{
+    padding: 0;
+    margin: 0;
+  }
+
+  
 </style>
 
 <body>
+  <h1>2010~2017 NYC Rat Sightings</h1>
+  <p>By Adeniyi Fagbewesa, Elise Song, Ka-Hyun Nam, and Morgan Suh</p>
+  <p>
+    This interactive visualization plots a cloropleth map of 
+    <strong>Average Property Sales per Year</strong>, as well as the number of 
+    <strong>Rat Sightings per Year</strong> for each NYC borough.
+  </p>
+  <p><strong>Directions:</strong> Interact with the slider to adjust the year. Click to zoom into 
+    a borough and double-click to zoom back out to the city.
+  </p>
+
   <svg></svg>
-  <div id="slider-container"></div>
-  <label for="temp" id="slider-label">
-    Currently the year is: <output id="value"></output>
-  </label>
-  <br />
-  <input id="slider" type="range" min="2010" max="2017" list="markers" value="2017" />
+  <div id="slider-container">
+    <label for="temp" id="slider-label">
+      Currently the year is: <output id="value"></output>
+    </label>
+    <input id="slider" type="range" min="2010" max="2017" list="markers" value="2017" />
+    <datalist id="markers">
+      <option value="2010" label="2010"></option>
+      <option value="2011" label="2011"></option>
+      <option value="2012" label="2012"></option>
+      <option value="2013" label="2013"></option>
+      <option value="2014" label="2014"></option>
+      <option value="2015" label="2015"></option>
+      <option value="2016" label="2016"></option>
+      <option value="2017" label="2017"></option>
+  
+    </datalist>
+  </div>
 
-  <datalist id="markers">
-    <option value="2010" label="2010"></option>
-    <option value="2011" label="2011"></option>
-    <option value="2012" label="2012"></option>
-    <option value="2013" label="2013"></option>
-    <option value="2014" label="2014"></option>
-    <option value="2015" label="2015"></option>
-    <option value="2016" label="2016"></option>
-    <option value="2017" label="2017"></option>
-
-  </datalist>
+  
   <!-- <input id="slider-container" type="range" min="2010" max="2017" /> -->
   <!-- <div id="selected-year">Selected Year: <span id="year-value">2010</span></div> -->
   <!-- <script src="https://d3js.org/d3.v3.min.js"></script> -->
