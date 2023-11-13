@@ -26,9 +26,13 @@
     /* Cornflower Blue */
   }
 
+  :root{
+    --bg-color: #e1e0fb;
+  }
+
   .map-layer {
     fill: #fff;
-    stroke: #aaa;
+    stroke: var(--bg-color);
   }
 
   #slider-container {
@@ -60,6 +64,10 @@
   #value {
     font-weight: bold;
   }
+
+  body {
+    background-color: var(--bg-color);
+  }
 </style>
 
 <body>
@@ -86,6 +94,10 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://d3js.org/topojson.v3.min.js"></script>
   <script>
+    //colors 
+    const bubbleColor = "white";
+    const bubbleOpacity = .7;
+
     // YEAR SLIDER
     const startYear = 2017;
     const input = document.querySelector("#slider");
@@ -148,7 +160,7 @@
                 const priceExtent = d3.extent(allPrices);
                 const colors = Object.values(colorMap);
                 const colorScale = d3
-                  .scaleQuantile(d3.schemeBlues[6].slice(1))
+                  .scaleQuantile(d3.schemeBuPu[6].slice(1))
                   .domain(allPrices);
 
                 mapLayer
@@ -202,6 +214,7 @@
                 function drawHeatMap() {
 
                   if (focusedBoro) {
+                    console.log("in focus heat")
                     mapLayer.selectAll('path')
                       .transition()
                       .duration(700)
@@ -252,32 +265,75 @@
                   focusedBoro = unfocus ? null : boro;
                   focusedZip = unfocus ? null : zip;
                   drawHeatMap()
+                  drawRatBubbles()
                 }
 
                 // RAT FUNCTIONS
-                d3.csv("Rat_Sightings.csv").then(function (data) {
-                  let rat_sightings_by_year = {
-                    2010: {},
-                    2011: {},
-                    2012: {},
-                    2013: {},
-                    2014: {},
-                    2015: {},
-                    2016: {},
-                    2017: {},
-                  };
 
-                  function colorZipCodesByBorough() {
+                function drawRatBubbles(year) {
+                  //console.log("drawRatBubles change", year, typeof year);
+                  const zipBubble = focusedBoro? bubbleOpacity : 1;
+                  const boroBubble = focusedBoro? 1 : bubbleOpacity;
+                  for (let i in Object.keys(features)) {
+                    f = features[i];
+                    const zip = f.properties.ZIPCODE;
                     mapLayer
-                      .selectAll("path")
+                      .select("#" + zip)
+                      .style("opacity", zipBubble)
                       .transition()
                       .duration(700)
-                      .style("fill", function (f) {
-                        const zipCode = f.properties.ZIPCODE;
-                        const boroughName = zipData[zipCode];
-                        return colorMap[boroughName];
-                      });
+                      .attr("r", rat_zipcodes[year][zip]);
                   }
+                
+                  for (let centroid in borough_centroid) {
+                    mapLayer
+                      .select("#" + centroid.split(" ")[0])
+                      .style("opacity", boroBubble)
+                      .transition()
+                      .duration(700)
+                      .attr("r", rat_sightings_by_year[year][centroid] / bubblesize);
+                  }
+                  
+                  
+                }
+
+                let rat_sightings_by_year = {
+                  2010: {},
+                  2011: {},
+                  2012: {},
+                  2013: {},
+                  2014: {},
+                  2015: {},
+                  2016: {},
+                  2017: {},
+                };
+
+                let rat_zipcodes = {
+                  2010: {},
+                  2011: {},
+                  2012: {},
+                  2013: {},
+                  2014: {},
+                  2015: {},
+                  2016: {},
+                  2017: {},
+                };
+
+                d3.csv("Rat_Sightings.csv").then(function (data) {
+                  
+
+
+                  //function colorZipCodesByBorough() {
+                    //mapLayer
+                      //.selectAll("path")
+                      //.transition()
+                      //.duration(700)
+                      //.style("fill", function (f) {
+                      //  const zipCode = f.properties.ZIPCODE;
+                      //  const boroughName = zipData[zipCode];
+                      //  return colorMap[boroughName];
+                      //});
+                  //}
 
                   data.forEach(function (data) {
                     // zip code
@@ -294,6 +350,13 @@
                         rat_sightings_by_year[year_key][borough_name] + 1;
                     } else {
                       rat_sightings_by_year[year_key][borough_name] = 1;
+                    }
+
+                    if (zip_code in rat_zipcodes[year_key]) {
+                      rat_zipcodes[year_key][zip_code] =
+                        rat_zipcodes[year_key][zip_code] + 1;
+                    } else {
+                      rat_zipcodes[year_key][zip_code] = 1;
                     }
                   });
 
@@ -315,22 +378,34 @@
                       .attr("cx", centroid_coords[0])
                       .attr("cy", centroid_coords[1])
                       .attr("r", curr_rat_sightings[centroid] / bubblesize)
-                      .style("fill", "red")
-                      .style("opacity", "0.3")
-                      .style("stroke", "red")
+                      .style("fill", bubbleColor)
+                      .style("opacity", bubbleOpacity)
+                      .style("stroke", bubbleColor)
                       .style("pointer-events", "none");
                   }
 
-                  function drawRatBubbles(year) {
-                    //console.log("drawRatBubles change", year, typeof year);
-                    for (let centroid in borough_centroid) {
-                      mapLayer
-                        .select("#" + centroid.split(" ")[0])
-                        .transition()
-                        .duration(700)
-                        .attr("r", rat_sightings_by_year[year][centroid] / bubblesize);
-                    }
+                  for (let i in Object.keys(features)) {
+                    f = features[i];
+                    console.log("this is f coordinates")
+                    
+                    const [cX, cY] = pathGenerator.centroid(f);
+                    console.log(cX);
+                    console.log(cY);
+                    const zip = f.properties.ZIPCODE;
+                    console.log(rat_zipcodes[currentYear][zip]);
+                    mapLayer
+                      .append("circle")
+                      .attr("id", zip)
+                      .attr("cx", cX)
+                      .attr("cy", cY)
+                      .attr("r", rat_zipcodes[currentYear][zip] / 50)
+                      .style("fill", bubbleColor)
+                      .style("opacity", bubbleOpacity)
+                      .style("stroke", bubbleColor)
+                      .style("pointer-events", "none");
                   }
+
+                  
 
                   const ratLegendGroup = svg
                     .append("g")
@@ -339,37 +414,37 @@
                       `translate(${(width * 4) / 5}, ${(height * 1) / 2})`
                     );
 
-              legendRatsCounts = [500, 1000, 3000, 5000];
-              ratLegendGroup
-                .selectAll("circle")
-                .data(legendRatsCounts)
-                .join("circle")
-                .attr(
-                  "cy",
-                  (ratCount, i) =>
-                    -(i * (30 + ratCount / 170) + 10 + ratCount / 1000)
-                )
-                .attr("cx", (ratCount, i) => -ratCount / 125)
-                .attr("r", (ratCount) => {
-                  return ratCount / bubblesize;
-                })
-                .style("fill", "red")
-                .style("opacity", "0.3")
-                .style("stroke", "red");
+                legendRatsCounts = [500, 1000, 3000, 5000];
+                ratLegendGroup
+                  .selectAll("circle")
+                  .data(legendRatsCounts)
+                  .join("circle")
+                  .attr(
+                    "cy",
+                    (ratCount, i) =>
+                      -(i * (30 + ratCount / 170) + 10 + ratCount / 1000)
+                  )
+                  .attr("cx", (ratCount, i) => -ratCount / 125)
+                  .attr("r", (ratCount) => {
+                    return ratCount / bubblesize;
+                  })
+                  .style("fill", bubbleColor)
+                  .style("opacity", bubbleOpacity)
+                  .style("stroke", bubbleColor);
 
-              ratLegendGroup
-                .selectAll("text")
-                .data(legendRatsCounts)
-                .join("text")
-                .attr("y", (ratCount, i) => -(i * (30 + ratCount / 170) + 5))
-                .attr("x", 20)
-                .attr("r", 5)
-                .text((v) => {
-                  return v + " Rat Sightings";
-                })
-                .style("font-family", "sans-serif")
-                .style("font-weight", "bold")
-                .style("fill", "black");
+                ratLegendGroup
+                  .selectAll("text")
+                  .data(legendRatsCounts)
+                  .join("text")
+                  .attr("y", (ratCount, i) => -(i * (30 + ratCount / 170) + 5))
+                  .attr("x", 20)
+                  .attr("r", 5)
+                  .text((v) => {
+                    return v + " Rat Sightings";
+                  })
+                  .style("font-family", "sans-serif")
+                  .style("font-weight", "bold")
+                  .style("fill", "black");
 
                   input.addEventListener("input", (event) => {
                     currentYear = event.target.value;
@@ -378,6 +453,11 @@
                     drawRatBubbles(currentYear);
                   });
                 });
+                
+
+
+
+
               })
           })
           .catch(function (error) {
