@@ -106,7 +106,7 @@
     // YEAR SLIDER END
 
     // BUBBLE SIZE
-    const bubblesize = 100;
+    const bubblesize = 80;
 
     // MAP DRAWING AND MOUSE OVER FUNCTIONS
     var width = 960,
@@ -272,21 +272,28 @@
                 function drawRatBubbles() {
                   //console.log("drawRatBubles change", year, typeof year);
                   console.log(currentYear)
-                  const zipBubble = focusedBoro? bubbleOpacity : 0;
-                  const boroBubble = focusedBoro? 0 : bubbleOpacity;
+                  const zipBubble = (focusedBoro)? bubbleOpacity : 0;
+                  const boroBubble = (focusedBoro)? 0 : bubbleOpacity;
                   for (let i in Object.keys(features)) {
                     f = features[i];
                     const zip = f.properties.ZIPCODE;
-                    try{
-                      mapLayer
-                      .select("#" + zip)
-                      .style("opacity", zipBubble)
-                      .transition()
-                      .duration(700)
-                      .attr("r", rat_zipcodes[currentYear][zip]);
-                    } catch (DOMException){
-                      
+                    let radius = rat_zipcodes[Number(currentYear)][Number(zip)];
+                    if (radius == undefined){
+                      radius = 0;
                     }
+                    if (zip == 10001){
+                      console.log("year " + currentYear);
+                      console.log("r " + radius);
+                    }
+                    mapLayer
+                    .select("#z" + zip)
+                    .style("opacity", zipBubble)
+                    .transition()
+                    .duration(700)
+                    .attr("r", radius/ bubblesize);
+                    
+                    
+                  
                     
                   }
                 
@@ -362,10 +369,15 @@
                         rat_zipcodes[year_key][zip_code] + 1;
                     } else {
                       rat_zipcodes[year_key][zip_code] = 1;
+                      
                     }
-                  });
 
-                  let curr_rat_sightings = rat_sightings_by_year["2017"];
+                  });
+                  console.log("Rat zip");
+                  console.log(rat_zipcodes[2017]);
+                  console.log(rat_zipcodes[2017][10310]);
+
+                  let curr_rat_sightings = rat_sightings_by_year[currentYear];
 
                   borough_centroid = {
                     "STATEN ISLAND": [308.69135817244097, 405.01656413868227],
@@ -394,12 +406,18 @@
                     
                     const [cX, cY] = pathGenerator.centroid(f);
                     const zip = f.properties.ZIPCODE;
+
+                    let radius = rat_zipcodes[Number(currentYear)][Number(zip)];
+                    if (radius == undefined){
+                      radius = 0;
+                    }
+                    //console.log("r " + radius);
                     mapLayer
                       .append("circle")
-                      .attr("id", zip)
+                      .attr("id", "z"+zip)
                       .attr("cx", cX)
                       .attr("cy", cY)
-                      .attr("r", rat_zipcodes[currentYear][zip] / 50)
+                      .attr("r",  radius / bubblesize)
                       .style("fill", bubbleColor)
                       .style("opacity", 0)
                       .style("stroke", bubbleColor)
