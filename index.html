@@ -140,7 +140,7 @@
     <strong>Rat Sightings per Year</strong> for each NYC borough.
   </p>
   <p><strong>Directions:</strong> Interact with the slider to adjust the year. Click to zoom into 
-    a borough and double-click to zoom back out to the city.
+    a borough and navigate around the map. Double-click to zoom back out to the city.
   </p>
 
   <svg></svg>
@@ -510,7 +510,8 @@
                       `translate(${(width * 4) / 5}, ${(height * 1) / 2})`
                     );
 
-                legendRatsCounts = [5000, 2500, 1000, 100];
+                legendRatsCounts = [5000, 2500, 1000, 500, 100];
+                const opacities = [.2, .25, .3, .35, 1]
                 ratLegendGroup
                   .selectAll("circle")
                   .data(legendRatsCounts)
@@ -521,7 +522,7 @@
                     return ratCount / bubblesize;
                   })
                   .style("fill", bubbleColor)
-                  .style("opacity", (ratCount) => .3)
+                  .style("opacity", (ratCount, i) => opacities[i])
                   .style("stroke", bubbleColor)
                   .style("stroke-width", 1.8);
 
@@ -529,7 +530,7 @@
                   .selectAll("text")
                   .data(legendRatsCounts.reverse())
                   .join("text")
-                  .attr("y", (ratCount, i) => -(i*20+ 70)) 
+                  .attr("y", (ratCount, i) => -(i*20+ 60)) 
                   .attr("x", 20)
                   .attr("r", 5)
                   .text((v) => {
