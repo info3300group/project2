@@ -214,7 +214,6 @@
                 function drawHeatMap() {
 
                   if (focusedBoro) {
-                    console.log("in focus heat")
                     mapLayer.selectAll('path')
                       .transition()
                       .duration(700)
@@ -270,19 +269,25 @@
 
                 // RAT FUNCTIONS
 
-                function drawRatBubbles(year) {
+                function drawRatBubbles() {
                   //console.log("drawRatBubles change", year, typeof year);
-                  const zipBubble = focusedBoro? bubbleOpacity : 1;
-                  const boroBubble = focusedBoro? 1 : bubbleOpacity;
+                  console.log(currentYear)
+                  const zipBubble = focusedBoro? bubbleOpacity : 0;
+                  const boroBubble = focusedBoro? 0 : bubbleOpacity;
                   for (let i in Object.keys(features)) {
                     f = features[i];
                     const zip = f.properties.ZIPCODE;
-                    mapLayer
+                    try{
+                      mapLayer
                       .select("#" + zip)
                       .style("opacity", zipBubble)
                       .transition()
                       .duration(700)
-                      .attr("r", rat_zipcodes[year][zip]);
+                      .attr("r", rat_zipcodes[currentYear][zip]);
+                    } catch (DOMException){
+                      
+                    }
+                    
                   }
                 
                   for (let centroid in borough_centroid) {
@@ -291,7 +296,7 @@
                       .style("opacity", boroBubble)
                       .transition()
                       .duration(700)
-                      .attr("r", rat_sightings_by_year[year][centroid] / bubblesize);
+                      .attr("r", rat_sightings_by_year[currentYear][centroid] / bubblesize);
                   }
                   
                   
@@ -386,13 +391,9 @@
 
                   for (let i in Object.keys(features)) {
                     f = features[i];
-                    console.log("this is f coordinates")
                     
                     const [cX, cY] = pathGenerator.centroid(f);
-                    console.log(cX);
-                    console.log(cY);
                     const zip = f.properties.ZIPCODE;
-                    console.log(rat_zipcodes[currentYear][zip]);
                     mapLayer
                       .append("circle")
                       .attr("id", zip)
@@ -400,7 +401,7 @@
                       .attr("cy", cY)
                       .attr("r", rat_zipcodes[currentYear][zip] / 50)
                       .style("fill", bubbleColor)
-                      .style("opacity", bubbleOpacity)
+                      .style("opacity", 0)
                       .style("stroke", bubbleColor)
                       .style("pointer-events", "none");
                   }
@@ -450,7 +451,7 @@
                     currentYear = event.target.value;
                     value.textContent = currentYear;
                     drawHeatMap();
-                    drawRatBubbles(currentYear);
+                    drawRatBubbles();
                   });
                 });
                 
