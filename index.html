@@ -36,6 +36,14 @@
     stroke: var(--bg-color);
   }
 
+  .heat-legend {
+    background-color:#817fc2;
+
+  }
+  .rat-legend{
+    background-color: #817fc2;
+  }
+
   #slider-container {
     width: 80%;
     margin: 20px auto;
@@ -165,6 +173,8 @@
     const bubbleColor = "white";
     const bubbleOpacity = .7;
     const font = "Baskerville"
+    const bgcolor = "#e1e0fb";
+    const darkcolor = "#817fc2";
 
     // YEAR SLIDER
     const startYear = 2017;
@@ -256,9 +266,13 @@
                     mouseclick(d, this);
                   })
                   .style("cursor", "pointer");
+                
+
+             
 
                 const legendGroup = svg
                   .append("g")
+                  .classed("heat-legend", true)
                   .attr(
                     "transform",
                     `translate(${(width * 4) / 5}, ${(height * 3) / 4})`
@@ -490,38 +504,36 @@
 
                   const ratLegendGroup = svg
                     .append("g")
+                    .classed("rat-legend", true)
                     .attr(
                       "transform",
                       `translate(${(width * 4) / 5}, ${(height * 1) / 2})`
                     );
 
-                legendRatsCounts = [500, 1000, 3000, 5000];
+                legendRatsCounts = [5000, 2500, 1000, 100];
                 ratLegendGroup
                   .selectAll("circle")
                   .data(legendRatsCounts)
                   .join("circle")
-                  .attr(
-                    "cy",
-                    (ratCount, i) =>
-                      -(i*20+ 10)
-                  )
-                  .attr("cx", (ratCount, i) => -ratCount / bubblesize)
+                  .attr("cy", -5000 / bubblesize - 20)
+                  .attr("cx", 0)
                   .attr("r", (ratCount) => {
                     return ratCount / bubblesize;
                   })
                   .style("fill", bubbleColor)
-                  .style("opacity", bubbleOpacity)
-                  .style("stroke", bubbleColor);
+                  .style("opacity", (ratCount) => .3)
+                  .style("stroke", bubbleColor)
+                  .style("stroke-width", 1.8);
 
                 ratLegendGroup
                   .selectAll("text")
-                  .data(legendRatsCounts)
+                  .data(legendRatsCounts.reverse())
                   .join("text")
-                  .attr("y", (ratCount, i) => -(i*20+ 5))
+                  .attr("y", (ratCount, i) => -(i*20+ 70)) 
                   .attr("x", 20)
                   .attr("r", 5)
                   .text((v) => {
-                    return v + " Rat Sightings";
+                    return v + " rat sightings";
                   })
                   .style("font-family", font)
                   .style("fill", "black");
