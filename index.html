@@ -28,6 +28,7 @@
 
   :root{
     --bg-color: #e1e0fb;
+    --slider-color: #817fc2;
   }
 
   .map-layer {
@@ -49,7 +50,35 @@
     max-width: 500px;
     margin: auto;
     display: block;
-    font-family: sans-serif;
+    font-family: "Baskerville";
+    background: transparent;
+    appearance: none;
+  }
+
+  datalist{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    font-family: "Baskerville";
+    font-style: italic;
+
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track{
+    background: var(--slider-color);
+    height: 0.1rem;
+    
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    height: 1rem;
+    width: 1rem;
+    border-radius: 50%;
+    margin-top: -8px;
+    background-color: var(--slider-color);
   }
 
   #slider-label {
@@ -58,10 +87,11 @@
     max-width: 500px;
     margin: auto;
     display: block;
-    font-family: sans-serif;
+    font-family: "Baskerville";
   }
 
   #value {
+    font-style: italic;
     font-weight: bold;
   }
 
@@ -80,13 +110,15 @@
   <input id="slider" type="range" min="2010" max="2017" list="markers" value="2017" />
 
   <datalist id="markers">
-    <option value="2010"></option>
-    <option value="2011"></option>
-    <option value="2012"></option>
-    <option value="2013"></option>
-    <option value="2014"></option>
-    <option value="2015"></option>
-    <option value="2016"></option>
+    <option value="2010" label="2010"></option>
+    <option value="2011" label="2011"></option>
+    <option value="2012" label="2012"></option>
+    <option value="2013" label="2013"></option>
+    <option value="2014" label="2014"></option>
+    <option value="2015" label="2015"></option>
+    <option value="2016" label="2016"></option>
+    <option value="2017" label="2017"></option>
+
   </datalist>
   <!-- <input id="slider-container" type="range" min="2010" max="2017" /> -->
   <!-- <div id="selected-year">Selected Year: <span id="year-value">2010</span></div> -->
@@ -97,6 +129,7 @@
     //colors 
     const bubbleColor = "white";
     const bubbleOpacity = .7;
+    const font = "Baskerville"
 
     // YEAR SLIDER
     const startYear = 2017;
@@ -140,6 +173,16 @@
     var mapLayer = g.append("g").classed("map-layer", true);
 
     d3.json("zip_to_borough.json").then(function (zipData) {
+      let rat_zipcodes = {
+        2010: {},
+        2011: {},
+        2012: {},
+        2013: {},
+        2014: {},
+        2015: {},
+        2016: {},
+        2017: {},
+      };
       d3.json("zip_code.geojson").then(function (mapData) {
         //console.log("Map Data:", mapData);
 
@@ -205,8 +248,7 @@
                   .attr("x", 20)
                   .attr("r", 5)
                   .text((v) => d3.format("$,.0f")(v) + " >")
-                  .style("font-family", "sans-serif")
-                  .style("font-weight", "bold")
+                  .style("font-family", font)
                   .style("fill", "black");
 
                 drawHeatMap();
@@ -271,7 +313,6 @@
 
                 function drawRatBubbles() {
                   //console.log("drawRatBubles change", year, typeof year);
-                  console.log(currentYear)
                   const zipBubble = (focusedBoro)? bubbleOpacity : 0;
                   const boroBubble = (focusedBoro)? 0 : bubbleOpacity;
                   for (let i in Object.keys(features)) {
@@ -281,10 +322,7 @@
                     if (radius == undefined){
                       radius = 0;
                     }
-                    if (zip == 10001){
-                      console.log("year " + currentYear);
-                      console.log("r " + radius);
-                    }
+                   
                     mapLayer
                     .select("#z" + zip)
                     .style("opacity", zipBubble)
@@ -320,16 +358,7 @@
                   2017: {},
                 };
 
-                let rat_zipcodes = {
-                  2010: {},
-                  2011: {},
-                  2012: {},
-                  2013: {},
-                  2014: {},
-                  2015: {},
-                  2016: {},
-                  2017: {},
-                };
+                
 
                 d3.csv("Rat_Sightings.csv").then(function (data) {
                   
@@ -373,9 +402,7 @@
                     }
 
                   });
-                  console.log("Rat zip");
-                  console.log(rat_zipcodes[2017]);
-                  console.log(rat_zipcodes[2017][10310]);
+                
 
                   let curr_rat_sightings = rat_sightings_by_year[currentYear];
 
@@ -441,9 +468,9 @@
                   .attr(
                     "cy",
                     (ratCount, i) =>
-                      -(i * (30 + ratCount / 170) + 10 + ratCount / 1000)
+                      -(i*20+ 10)
                   )
-                  .attr("cx", (ratCount, i) => -ratCount / 125)
+                  .attr("cx", (ratCount, i) => -ratCount / bubblesize)
                   .attr("r", (ratCount) => {
                     return ratCount / bubblesize;
                   })
@@ -455,14 +482,13 @@
                   .selectAll("text")
                   .data(legendRatsCounts)
                   .join("text")
-                  .attr("y", (ratCount, i) => -(i * (30 + ratCount / 170) + 5))
+                  .attr("y", (ratCount, i) => -(i*20+ 5))
                   .attr("x", 20)
                   .attr("r", 5)
                   .text((v) => {
                     return v + " Rat Sightings";
                   })
-                  .style("font-family", "sans-serif")
-                  .style("font-weight", "bold")
+                  .style("font-family", font)
                   .style("fill", "black");
 
                   input.addEventListener("input", (event) => {
@@ -489,14 +515,20 @@
         d3.select(path).style("fill", "rgba(255, 165, 0, 0.3)");
         const zipCode = d.properties.ZIPCODE;
         const borough = zipData[zipCode];
+        let rats = rat_zipcodes[currentYear][zipCode]
+        if (rats == undefined) rats = 0
         boroughName
           .text(borough)
           .attr("font-size", "42px")
-          .style("font-family", "Arial");
+          .style("font-family", font);
         populationText
-          .text("Population: " + d.properties.POPULATION)
+          .text("Human Population: " + d.properties.POPULATION)
           .attr("font-size", "15px")
-          .style("font-family", "Arial");
+          .style("font-family", font);
+        ratText
+          .text("Rat Sightings: " + rats)
+          .attr("font-size", "15px")
+          .style("font-family", font);
         //.log("zipcode is: ", zipCode)
       }
       function mouseout(d, path) {
@@ -505,6 +537,7 @@
         const color = colorMap[boro];
         boroughName.text(focusedBoro ? focusedBoro : "");
         populationText.text("");
+        ratText.text("");
         //console.log(mouseout, "color");
 
         d3.select(path).style("fill", focusedBoro ? colorZipMap[zip] : color); // Set fill back to the original borough color
@@ -516,6 +549,7 @@
 
     var boroughName = g.append("text").attr("x", 20).attr("y", 45);
     var populationText = g.append("text").attr("x", 20).attr("y", 70);
+    var ratText = g.append("text").attr("x", 20).attr("y", 90);
 
     //MAP DRAWING END
   </script>
