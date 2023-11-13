@@ -28,11 +28,21 @@
 
   :root{
     --bg-color: #e1e0fb;
+    --slider-color: #817fc2;
+    --text-color: #25226a;
   }
 
   .map-layer {
     fill: #fff;
     stroke: var(--bg-color);
+  }
+
+  .heat-legend {
+    background-color:#817fc2;
+
+  }
+  .rat-legend{
+    background-color: #817fc2;
   }
 
   #slider-container {
@@ -49,7 +59,35 @@
     max-width: 500px;
     margin: auto;
     display: block;
-    font-family: sans-serif;
+    font-family: "Baskerville";
+    background: transparent;
+    appearance: none;
+  }
+
+  datalist{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    font-family: "Baskerville";
+    font-style: italic;
+
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track{
+    background: var(--slider-color);
+    height: 0.1rem;
+    
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    height: 1rem;
+    width: 1rem;
+    border-radius: 50%;
+    margin-top: -8px;
+    background-color: var(--slider-color);
   }
 
   #slider-label {
@@ -58,36 +96,94 @@
     max-width: 500px;
     margin: auto;
     display: block;
-    font-family: sans-serif;
+    font-family: "Baskerville";
+    color: var(--text-color);
   }
 
   #value {
+    font-style: italic;
     font-weight: bold;
   }
 
   body {
     background-color: var(--bg-color);
+    font-family: "Baskerville";
   }
+
+  h1{
+    font-weight: normal;
+    font-variant: small-caps;
+    margin-left: 20px;
+    margin-bottom: 0px;
+  }
+
+  h3{
+    font-weight: normal;
+    margin-left: 20px;
+    margin-bottom: 15px;
+    margin-top:5px;
+    
+  }
+
+  p{
+    font-weight: normal;
+    margin-left: 20px;
+    margin-bottom: 5px;
+    margin-top:0px;
+    
+  }
+
+ 
+  strong{
+    font-weight: normal;
+    font-variant: small-caps;
+  }
+
+  svg{
+    padding: 0;
+    margin: 0;
+  }
+
+  option{
+    color: var(--text-color);
+  }
+  
+
+  
 </style>
 
 <body>
-  <svg></svg>
-  <div id="slider-container"></div>
-  <label for="temp" id="slider-label">
-    Currently the year is: <output id="value"></output>
-  </label>
-  <br />
-  <input id="slider" type="range" min="2010" max="2017" list="markers" value="2017" />
+  <h1>2010~2017 NYC Rat Sightings</h1>
+  <h3>By Adeniyi Fagbewesa, Elise Song, Ka-Hyun Nam, and Morgan Suh</h3>
+  <p>
+    This interactive visualization plots a cloropleth map of 
+    <strong>Average Property Sales per Year</strong>, as well as the number of 
+    <strong>Rat Sightings per Year</strong> for each NYC borough and zipcode.
+  </p>
+  <p><strong>Directions:</strong> Interact with the slider to adjust the year. Click to zoom into 
+    a borough and navigate around the map. Double-click to zoom back out to the city.
+  </p>
 
-  <datalist id="markers">
-    <option value="2010"></option>
-    <option value="2011"></option>
-    <option value="2012"></option>
-    <option value="2013"></option>
-    <option value="2014"></option>
-    <option value="2015"></option>
-    <option value="2016"></option>
-  </datalist>
+  <svg></svg>
+  <div id="slider-container">
+    <label for="temp" id="slider-label">
+      Currently the year is: <output id="value"></output>
+    </label>
+    <input id="slider" type="range" min="2010" max="2017" list="markers" value="2017" />
+    <datalist id="markers">
+      <option value="2010" label="2010"></option>
+      <option value="2011" label="2011"></option>
+      <option value="2012" label="2012"></option>
+      <option value="2013" label="2013"></option>
+      <option value="2014" label="2014"></option>
+      <option value="2015" label="2015"></option>
+      <option value="2016" label="2016"></option>
+      <option value="2017" label="2017"></option>
+  
+    </datalist>
+  </div>
+
+  
   <!-- <input id="slider-container" type="range" min="2010" max="2017" /> -->
   <!-- <div id="selected-year">Selected Year: <span id="year-value">2010</span></div> -->
   <!-- <script src="https://d3js.org/d3.v3.min.js"></script> -->
@@ -97,6 +193,10 @@
     //colors 
     const bubbleColor = "white";
     const bubbleOpacity = .7;
+    const font = "Baskerville"
+    const bgcolor = "#e1e0fb";
+    const darkcolor = "#817fc2";
+    const textcolor = "#25226a";
 
     // YEAR SLIDER
     const startYear = 2017;
@@ -106,7 +206,7 @@
     // YEAR SLIDER END
 
     // BUBBLE SIZE
-    const bubblesize = 100;
+    const bubblesize = 80;
 
     // MAP DRAWING AND MOUSE OVER FUNCTIONS
     var width = 960,
@@ -140,6 +240,16 @@
     var mapLayer = g.append("g").classed("map-layer", true);
 
     d3.json("zip_to_borough.json").then(function (zipData) {
+      let rat_zipcodes = {
+        2010: {},
+        2011: {},
+        2012: {},
+        2013: {},
+        2014: {},
+        2015: {},
+        2016: {},
+        2017: {},
+      };
       d3.json("zip_code.geojson").then(function (mapData) {
         //console.log("Map Data:", mapData);
 
@@ -178,9 +288,13 @@
                     mouseclick(d, this);
                   })
                   .style("cursor", "pointer");
+                
+
+             
 
                 const legendGroup = svg
                   .append("g")
+                  .classed("heat-legend", true)
                   .attr(
                     "transform",
                     `translate(${(width * 4) / 5}, ${(height * 3) / 4})`
@@ -205,9 +319,8 @@
                   .attr("x", 20)
                   .attr("r", 5)
                   .text((v) => d3.format("$,.0f")(v) + " >")
-                  .style("font-family", "sans-serif")
-                  .style("font-weight", "bold")
-                  .style("fill", "black");
+                  .style("font-family", font)
+                  .style("fill", textcolor);
 
                 drawHeatMap();
 
@@ -271,22 +384,25 @@
 
                 function drawRatBubbles() {
                   //console.log("drawRatBubles change", year, typeof year);
-                  console.log(currentYear)
-                  const zipBubble = focusedBoro? bubbleOpacity : 0;
-                  const boroBubble = focusedBoro? 0 : bubbleOpacity;
+                  const zipBubble = (focusedBoro)? bubbleOpacity : 0;
+                  const boroBubble = (focusedBoro)? 0 : bubbleOpacity;
                   for (let i in Object.keys(features)) {
                     f = features[i];
                     const zip = f.properties.ZIPCODE;
-                    try{
-                      mapLayer
-                      .select("#" + zip)
-                      .style("opacity", zipBubble)
-                      .transition()
-                      .duration(700)
-                      .attr("r", rat_zipcodes[currentYear][zip]);
-                    } catch (DOMException){
-                      
+                    let radius = rat_zipcodes[Number(currentYear)][Number(zip)];
+                    if (radius == undefined){
+                      radius = 0;
                     }
+                   
+                    mapLayer
+                    .select("#z" + zip)
+                    .style("opacity", zipBubble)
+                    .transition()
+                    .duration(700)
+                    .attr("r", radius/ bubblesize);
+                    
+                    
+                  
                     
                   }
                 
@@ -313,16 +429,7 @@
                   2017: {},
                 };
 
-                let rat_zipcodes = {
-                  2010: {},
-                  2011: {},
-                  2012: {},
-                  2013: {},
-                  2014: {},
-                  2015: {},
-                  2016: {},
-                  2017: {},
-                };
+                
 
                 d3.csv("Rat_Sightings.csv").then(function (data) {
                   
@@ -362,10 +469,13 @@
                         rat_zipcodes[year_key][zip_code] + 1;
                     } else {
                       rat_zipcodes[year_key][zip_code] = 1;
+                      
                     }
-                  });
 
-                  let curr_rat_sightings = rat_sightings_by_year["2017"];
+                  });
+                
+
+                  let curr_rat_sightings = rat_sightings_by_year[currentYear];
 
                   borough_centroid = {
                     "STATEN ISLAND": [308.69135817244097, 405.01656413868227],
@@ -394,12 +504,18 @@
                     
                     const [cX, cY] = pathGenerator.centroid(f);
                     const zip = f.properties.ZIPCODE;
+
+                    let radius = rat_zipcodes[Number(currentYear)][Number(zip)];
+                    if (radius == undefined){
+                      radius = 0;
+                    }
+                    //console.log("r " + radius);
                     mapLayer
                       .append("circle")
-                      .attr("id", zip)
+                      .attr("id", "z"+zip)
                       .attr("cx", cX)
                       .attr("cy", cY)
-                      .attr("r", rat_zipcodes[currentYear][zip] / 50)
+                      .attr("r",  radius / bubblesize)
                       .style("fill", bubbleColor)
                       .style("opacity", 0)
                       .style("stroke", bubbleColor)
@@ -410,42 +526,40 @@
 
                   const ratLegendGroup = svg
                     .append("g")
+                    .classed("rat-legend", true)
                     .attr(
                       "transform",
                       `translate(${(width * 4) / 5}, ${(height * 1) / 2})`
                     );
 
-                legendRatsCounts = [500, 1000, 3000, 5000];
+                legendRatsCounts = [5000, 2500, 1000, 500, 100];
+                const opacities = [.2, .25, .3, .35, 1]
                 ratLegendGroup
                   .selectAll("circle")
                   .data(legendRatsCounts)
                   .join("circle")
-                  .attr(
-                    "cy",
-                    (ratCount, i) =>
-                      -(i * (30 + ratCount / 170) + 10 + ratCount / 1000)
-                  )
-                  .attr("cx", (ratCount, i) => -ratCount / 125)
+                  .attr("cy", -5000 / bubblesize - 20)
+                  .attr("cx", 0)
                   .attr("r", (ratCount) => {
                     return ratCount / bubblesize;
                   })
                   .style("fill", bubbleColor)
-                  .style("opacity", bubbleOpacity)
-                  .style("stroke", bubbleColor);
+                  .style("opacity", (ratCount, i) => opacities[i])
+                  .style("stroke", bubbleColor)
+                  .style("stroke-width", 1.8);
 
                 ratLegendGroup
                   .selectAll("text")
-                  .data(legendRatsCounts)
+                  .data(legendRatsCounts.reverse())
                   .join("text")
-                  .attr("y", (ratCount, i) => -(i * (30 + ratCount / 170) + 5))
+                  .attr("y", (ratCount, i) => -(i*20+ 60)) 
                   .attr("x", 20)
                   .attr("r", 5)
                   .text((v) => {
-                    return v + " Rat Sightings";
+                    return v + " rat sightings";
                   })
-                  .style("font-family", "sans-serif")
-                  .style("font-weight", "bold")
-                  .style("fill", "black");
+                  .style("font-family", font)
+                  .style("fill", textcolor);
 
                   input.addEventListener("input", (event) => {
                     currentYear = event.target.value;
@@ -471,14 +585,23 @@
         d3.select(path).style("fill", "rgba(255, 165, 0, 0.3)");
         const zipCode = d.properties.ZIPCODE;
         const borough = zipData[zipCode];
+        let rats = rat_zipcodes[currentYear][zipCode]
+        if (rats == undefined) rats = 0
         boroughName
           .text(borough)
           .attr("font-size", "42px")
-          .style("font-family", "Arial");
+          .style("fill", textcolor)
+          .style("font-family", font);
         populationText
-          .text("Population: " + d.properties.POPULATION)
+          .text("Human Population: " + d.properties.POPULATION)
           .attr("font-size", "15px")
-          .style("font-family", "Arial");
+          .style("fill", textcolor)
+          .style("font-family", font);
+        ratText
+          .text("Rat Sightings: " + rats)
+          .attr("font-size", "15px")
+          .style("fill", textcolor)
+          .style("font-family", font);
         //.log("zipcode is: ", zipCode)
       }
       function mouseout(d, path) {
@@ -487,6 +610,7 @@
         const color = colorMap[boro];
         boroughName.text(focusedBoro ? focusedBoro : "");
         populationText.text("");
+        ratText.text("");
         //console.log(mouseout, "color");
 
         d3.select(path).style("fill", focusedBoro ? colorZipMap[zip] : color); // Set fill back to the original borough color
@@ -498,6 +622,7 @@
 
     var boroughName = g.append("text").attr("x", 20).attr("y", 45);
     var populationText = g.append("text").attr("x", 20).attr("y", 70);
+    var ratText = g.append("text").attr("x", 20).attr("y", 90);
 
     //MAP DRAWING END
   </script>
