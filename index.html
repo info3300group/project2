@@ -302,7 +302,9 @@
                 .attr('width', 220)
                 .style('fill', '#b5b4d6');
 
-                const legendText = [priceExtent[0]].concat(colorScale.quantiles()).concat(priceExtent[1]);
+                const legendText = [priceExtent[0]].concat(colorScale.quantiles())
+                    .concat(priceExtent[1]).map(i => Math.floor(i/1000)*1000);
+                
 
                 legendGroup
                   .selectAll("circle")
