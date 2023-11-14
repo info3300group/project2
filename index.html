@@ -257,13 +257,11 @@
             d3.json('average_prices_by_zip.json').then(function (zipPriceData) {
               const features = mapData.features;
               allZipPriceData = zipPriceData
-              const allPrices = Object.keys(salesPriceData)
-                .map((v) =>
-                  Object.keys(salesPriceData[v]).map((k) =>
-                    Number(salesPriceData[v][k])
-                  )
-                )
-                .flat();
+
+              const allPrices = Object.keys(zipPriceData).map(b => 
+                Object.keys(zipPriceData[b]).map(y=>zipPriceData[b][y]
+                .map(v=>Number(v['Sale Price'])).filter(v=>v > 1000)))
+                .flat(2)
 
               const priceExtent = d3.extent(allPrices);
               const colors = Object.values(colorMap);
@@ -304,7 +302,7 @@
                 .style('fill', '#b5b4d6');
 
                 const legendText = [priceExtent[0]].concat(colorScale.quantiles())
-                    .concat(priceExtent[1]).map(i => Math.floor(i/1000)*1000);
+                    .concat(9e6).map(i => Math.floor(i/1000)*1000);
                 
 
                 legendGroup
@@ -323,7 +321,9 @@
                   .attr("y", (_, i) => -(i * 30) + 5)
                   .attr("x", -30)
                   .attr("r", 5)
-                  .text((v, i) => `${d3.format("$,.0f")(legendText[i])} - ${d3.format("$,.0f")(v)}`)
+                  .text((v, i) => 
+                    `${d3.format("$,.0f")(legendText[i])} - 
+                    ${d3.format("$,.0f")(v)}${i === legendText.length - 2 ?'+':''}`)
                   .style("font-family", font)
                   .style("fill", textcolor);
 
