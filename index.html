@@ -300,11 +300,11 @@
                     `translate(${(width * 4) / 5}, ${(height * 3) / 4})`
                   );
 
-                const legendText = [priceExtent[0]].concat(colorScale.quantiles());
+                const legendText = [priceExtent[0]].concat(colorScale.quantiles()).concat(priceExtent[1]);
 
                 legendGroup
                   .selectAll("circle")
-                  .data(legendText)
+                  .data(legendText.slice(1))
                   .join("circle")
                   .attr("cy", (_, i) => -i * 30)
                   .attr("cx", 0)
@@ -313,12 +313,12 @@
 
                 legendGroup
                   .selectAll("text")
-                  .data(legendText)
+                  .data(legendText.slice(1))
                   .join("text")
                   .attr("y", (_, i) => -(i * 30) + 5)
                   .attr("x", 20)
                   .attr("r", 5)
-                  .text((v) => d3.format("$,.0f")(v) + " >")
+                  .text((v, i) => `${d3.format("$,.0f")(legendText[i])} - ${d3.format("$,.0f")(v)}`)
                   .style("font-family", font)
                   .style("fill", textcolor);
 
