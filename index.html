@@ -26,7 +26,7 @@
     /* Cornflower Blue */
   }
 
-  :root{
+  :root {
     --bg-color: #e1e0fb;
     --slider-color: #817fc2;
     --text-color: #25226a;
@@ -38,10 +38,9 @@
   }
 
   .heat-legend {
-    background-color:#817fc2;
-
+    background-color: #817fc2;
   }
-  .rat-legend{
+  .rat-legend {
     background-color: #817fc2;
   }
 
@@ -59,29 +58,27 @@
     max-width: 500px;
     margin: auto;
     display: block;
-    font-family: "Baskerville";
+    font-family: 'Baskerville';
     background: transparent;
     appearance: none;
   }
 
-  datalist{
+  datalist {
     display: flex;
     justify-content: space-between;
     width: 100%;
     max-width: 500px;
     margin: auto;
-    font-family: "Baskerville";
+    font-family: 'Baskerville';
     font-style: italic;
-
   }
 
-  input[type="range"]::-webkit-slider-runnable-track{
+  input[type='range']::-webkit-slider-runnable-track {
     background: var(--slider-color);
     height: 0.1rem;
-    
   }
 
-  input[type="range"]::-webkit-slider-thumb {
+  input[type='range']::-webkit-slider-thumb {
     appearance: none;
     height: 1rem;
     width: 1rem;
@@ -96,7 +93,7 @@
     max-width: 500px;
     margin: auto;
     display: block;
-    font-family: "Baskerville";
+    font-family: 'Baskerville';
     color: var(--text-color);
   }
 
@@ -107,61 +104,57 @@
 
   body {
     background-color: var(--bg-color);
-    font-family: "Baskerville";
+    font-family: 'Baskerville';
   }
 
-  h1{
+  h1 {
     font-weight: normal;
     font-variant: small-caps;
     margin-left: 20px;
     margin-bottom: 0px;
   }
 
-  h3{
+  h3 {
     font-weight: normal;
     margin-left: 20px;
     margin-bottom: 15px;
-    margin-top:5px;
-    
+    margin-top: 5px;
   }
 
-  p{
+  p {
     font-weight: normal;
     margin-left: 20px;
     margin-bottom: 5px;
-    margin-top:0px;
-    
+    margin-top: 0px;
   }
 
- 
-  strong{
+  strong {
     font-weight: normal;
     font-variant: small-caps;
   }
 
-  svg{
+  svg {
     padding: 0;
     margin: 0;
   }
 
-  option{
+  option {
     color: var(--text-color);
   }
-  
-
-  
 </style>
 
 <body>
   <h1>2010~2017 NYC Rat Sightings</h1>
   <h3>By Adeniyi Fagbewesa, Elise Song, Ka-Hyun Nam, and Morgan Suh</h3>
   <p>
-    This interactive visualization plots a cloropleth map of 
-    <strong>Average Property Sales per Year</strong>, as well as the number of 
+    This interactive visualization plots a cloropleth map of
+    <strong>Average Property Sales per Year</strong>, as well as the number of
     <strong>Rat Sightings per Year</strong> for each NYC borough and zipcode.
   </p>
-  <p><strong>Directions:</strong> Interact with the slider to adjust the year. Click to zoom into 
-    a borough and navigate around the map. Double-click to zoom back out to the city.
+  <p>
+    <strong>Directions:</strong> Interact with the slider to adjust the year.
+    Click to zoom into a borough and navigate around the map. Double-click to
+    zoom back out to the city.
   </p>
 
   <svg></svg>
@@ -169,7 +162,14 @@
     <label for="temp" id="slider-label">
       Currently the year is: <output id="value"></output>
     </label>
-    <input id="slider" type="range" min="2010" max="2017" list="markers" value="2017" />
+    <input
+      id="slider"
+      type="range"
+      min="2010"
+      max="2017"
+      list="markers"
+      value="2017"
+    />
     <datalist id="markers">
       <option value="2010" label="2010"></option>
       <option value="2011" label="2011"></option>
@@ -179,29 +179,27 @@
       <option value="2015" label="2015"></option>
       <option value="2016" label="2016"></option>
       <option value="2017" label="2017"></option>
-  
     </datalist>
   </div>
 
-  
   <!-- <input id="slider-container" type="range" min="2010" max="2017" /> -->
   <!-- <div id="selected-year">Selected Year: <span id="year-value">2010</span></div> -->
   <!-- <script src="https://d3js.org/d3.v3.min.js"></script> -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://d3js.org/topojson.v3.min.js"></script>
   <script>
-    //colors 
-    const bubbleColor = "white";
-    const bubbleOpacity = .7;
-    const font = "Baskerville"
-    const bgcolor = "#e1e0fb";
-    const darkcolor = "#817fc2";
-    const textcolor = "#25226a";
+    //colors
+    const bubbleColor = 'white';
+    const bubbleOpacity = 0.7;
+    const font = 'Baskerville';
+    const bgcolor = '#e1e0fb';
+    const darkcolor = '#817fc2';
+    const textcolor = '#25226a';
 
     // YEAR SLIDER
     const startYear = 2017;
-    const input = document.querySelector("#slider");
-    const value = document.querySelector("#value");
+    const input = document.querySelector('#slider');
+    const value = document.querySelector('#value');
     value.textContent = startYear;
     // YEAR SLIDER END
 
@@ -214,13 +212,13 @@
 
     // colors are actually set in colorScale below
     var colorMap = {
-      Bronx: "#ADD8E6", // Light Blue
-      Brooklyn: "#4169E1", // Royal Blue
-      Manhattan: "#00BFFF", // Deep Sky Blue
-      Queens: "#1E90FF", // Dodger Blue
-      "Staten Island": "#6495ED", // Cornflower Blue
+      Bronx: '#ADD8E6', // Light Blue
+      Brooklyn: '#4169E1', // Royal Blue
+      Manhattan: '#00BFFF', // Deep Sky Blue
+      Queens: '#1E90FF', // Dodger Blue
+      'Staten Island': '#6495ED', // Cornflower Blue
     };
-    let colorZipMap = {}
+    let colorZipMap = {};
 
     const projection = d3
       .geoMercator()
@@ -231,15 +229,15 @@
     // var path = d3.geo.path().projection(projection);
     const pathGenerator = d3.geoPath().projection(projection);
 
-    var svg = d3.select("svg").attr("width", width).attr("height", height);
+    var svg = d3.select('svg').attr('width', width).attr('height', height);
     let focusedBoro = null;
     let focusedZip = null;
     let currentYear = startYear;
-    var g = svg.append("g");
+    var g = svg.append('g');
 
-    var mapLayer = g.append("g").classed("map-layer", true);
+    var mapLayer = g.append('g').classed('map-layer', true);
 
-    d3.json("zip_to_borough.json").then(function (zipData) {
+    d3.json('zip_to_borough.json').then(function (zipData) {
       let rat_zipcodes = {
         2010: {},
         2011: {},
@@ -250,379 +248,361 @@
         2016: {},
         2017: {},
       };
-      d3.json("zip_code.geojson").then(function (mapData) {
+      d3.json('zip_code.geojson').then(function (mapData) {
         //console.log("Map Data:", mapData);
 
-        d3.json("average_sale_prices.json")
+        d3.json('average_sale_prices.json')
           .then(function (salesPriceData) {
-            d3.json("average_prices_by_zip.json")
-              .then(function (zipPriceData) {
-                const features = mapData.features;
+            d3.json('average_prices_by_zip.json').then(function (zipPriceData) {
+              const features = mapData.features;
 
-                const allPrices = Object.keys(salesPriceData)
-                  .map((v) =>
-                    Object.keys(salesPriceData[v]).map((k) =>
-                      Number(salesPriceData[v][k])
-                    )
+              const allPrices = Object.keys(salesPriceData)
+                .map((v) =>
+                  Object.keys(salesPriceData[v]).map((k) =>
+                    Number(salesPriceData[v][k])
                   )
-                  .flat();
+                )
+                .flat();
 
-                const priceExtent = d3.extent(allPrices);
-                const colors = Object.values(colorMap);
-                const colorScale = d3
-                  .scaleQuantile(d3.schemeBuPu[6].slice(1))
-                  .domain(allPrices);
+              const priceExtent = d3.extent(allPrices);
+              const colors = Object.values(colorMap);
+              const colorScale = d3
+                .scaleQuantile(d3.schemeBuPu[6].slice(1))
+                .domain(allPrices);
 
-                mapLayer
-                  .selectAll("path")
-                  .data(features)
-                  .join("path")
-                  .attr("d", pathGenerator)
-                  .on("mouseover", function (_, d) {
-                    mouseover(d, this);
-                  })
-                  .on("mouseout", function (_, d) {
-                    mouseout(d, this);
-                  })
-                  .on("click", function (_, d) {
-                    mouseclick(d, this);
-                  })
-                  .style("cursor", "pointer");
-                
+              mapLayer
+                .selectAll('path')
+                .data(features)
+                .join('path')
+                .attr('d', pathGenerator)
+                .on('mouseover', function (_, d) {
+                  mouseover(d, this);
+                })
+                .on('mouseout', function (_, d) {
+                  mouseout(d, this);
+                })
+                .on('click', function (_, d) {
+                  mouseclick(d, this);
+                })
+                .style('cursor', 'pointer');
 
-             
+              const legendGroup = svg
+                .append('g')
+                .classed('heat-legend', true)
+                .attr(
+                  'transform',
+                  `translate(${(width * 4) / 5}, ${(height * 3) / 4})`
+                );
 
-                const legendGroup = svg
-                  .append("g")
-                  .classed("heat-legend", true)
-                  .attr(
-                    "transform",
-                    `translate(${(width * 4) / 5}, ${(height * 3) / 4})`
-                  );
+              legendGroup
+                .append('rect')
+                .attr('x', -75)
+                .attr('y', -300)
+                .attr('height', 330)
+                .attr('width', 220)
+                .style('fill', '#b5b4d6');
 
-                const legendText = [priceExtent[0]].concat(colorScale.quantiles());
+              const legendText = [priceExtent[0]].concat(
+                colorScale.quantiles()
+              );
 
-                legendGroup
-                  .selectAll("circle")
-                  .data(legendText)
-                  .join("circle")
-                  .attr("cy", (_, i) => -i * 30)
-                  .attr("cx", 0)
-                  .attr("r", 5)
-                  .attr("fill", (v) => colorScale(v));
+              legendGroup
+                .selectAll('circle')
+                .data(legendText)
+                .join('circle')
+                .attr('cy', (_, i) => -i * 30)
+                .attr('cx', 0)
+                .attr('r', 5)
+                .attr('fill', (v) => colorScale(v));
 
-                legendGroup
-                  .selectAll("text")
-                  .data(legendText)
-                  .join("text")
-                  .attr("y", (_, i) => -(i * 30) + 5)
-                  .attr("x", 20)
-                  .attr("r", 5)
-                  .text((v) => d3.format("$,.0f")(v) + " >")
-                  .style("font-family", font)
-                  .style("fill", textcolor);
+              legendGroup
+                .selectAll('text')
+                .data(legendText)
+                .join('text')
+                .attr('y', (_, i) => -(i * 30) + 5)
+                .attr('x', 20)
+                .attr('r', 5)
+                .text((v) => d3.format('$,.0f')(v) + ' >')
+                .style('font-family', font)
+                .style('fill', textcolor);
 
-                drawHeatMap();
+              drawHeatMap();
 
-                function drawHeatMap() {
-
-                  if (focusedBoro) {
-                    mapLayer.selectAll('path')
-                      .transition()
-                      .duration(700)
-                      .style('fill', z => {
-                        const zip = Number(z.properties.ZIPCODE)
-                        const boro = zipData[Object.keys(zipData).find(k => Number(k) == zip)]
-                        if (zipPriceData[boro] == null) {
-                          return console.log(zip)
-                        }
-                        const priceData = zipPriceData[boro][currentYear].find(a => a['Zip Code'] == zip)
-                        const color = priceData ? colorScale(priceData['Sale Price']) : 'white'
-                        colorZipMap[zip] = color
-                        return color
-                      })
-                  }
-
-                  else {
-                    let currentYearData = [];
-                    Object.keys(colorMap).forEach((k) => {
-                      currentYearData[k] = salesPriceData[k][currentYear];
-                      colorMap[k] = colorScale(currentYearData[k]);
-                    });
-
-                    mapLayer
-                      .selectAll("path")
-                      .transition()
-                      .duration(700)
-                      .style("fill", f => colorScale(currentYearData[zipData[f.properties.ZIPCODE]])
-                      );
-                  }
-
-                }
-
-                function mouseclick(d, path) {
-                  const zip = d.properties.ZIPCODE
-                  const boro = zipData[zip];
-                  const [centerX, centerY] = pathGenerator.centroid(d);
-                  const zoomScale = 2;
-                  const unfocus = focusedZip == zip;
-
-                  const transformStr = unfocus
-                    ? "translate(0,0)"
-                    : `translate(${width / 2},${height / 2
-                    })scale(${zoomScale})translate(${-centerX},${-centerY})`;
-
-                  mapLayer.transition().duration(750).attr("transform", transformStr);
-
-                  focusedBoro = unfocus ? null : boro;
-                  focusedZip = unfocus ? null : zip;
-                  drawHeatMap()
-                  drawRatBubbles()
-                }
-
-                // RAT FUNCTIONS
-
-                function drawRatBubbles() {
-                  //console.log("drawRatBubles change", year, typeof year);
-                  const zipBubble = (focusedBoro)? bubbleOpacity : 0;
-                  const boroBubble = (focusedBoro)? 0 : bubbleOpacity;
-                  for (let i in Object.keys(features)) {
-                    f = features[i];
-                    const zip = f.properties.ZIPCODE;
-                    let radius = rat_zipcodes[Number(currentYear)][Number(zip)];
-                    if (radius == undefined){
-                      radius = 0;
-                    }
-                   
-                    mapLayer
-                    .select("#z" + zip)
-                    .style("opacity", zipBubble)
+              function drawHeatMap() {
+                if (focusedBoro) {
+                  mapLayer
+                    .selectAll('path')
                     .transition()
                     .duration(700)
-                    .attr("r", radius/ bubblesize);
-                    
-                    
-                  
-                    
+                    .style('fill', (z) => {
+                      const zip = Number(z.properties.ZIPCODE);
+                      const boro =
+                        zipData[
+                          Object.keys(zipData).find((k) => Number(k) == zip)
+                        ];
+                      if (zipPriceData[boro] == null) {
+                        return console.log(zip);
+                      }
+                      const priceData = zipPriceData[boro][currentYear].find(
+                        (a) => a['Zip Code'] == zip
+                      );
+                      const color = priceData
+                        ? colorScale(priceData['Sale Price'])
+                        : 'white';
+                      colorZipMap[zip] = color;
+                      return color;
+                    });
+                } else {
+                  let currentYearData = [];
+                  Object.keys(colorMap).forEach((k) => {
+                    currentYearData[k] = salesPriceData[k][currentYear];
+                    colorMap[k] = colorScale(currentYearData[k]);
+                  });
+
+                  mapLayer
+                    .selectAll('path')
+                    .transition()
+                    .duration(700)
+                    .style('fill', (f) =>
+                      colorScale(currentYearData[zipData[f.properties.ZIPCODE]])
+                    );
+                }
+              }
+
+              function mouseclick(d, path) {
+                const zip = d.properties.ZIPCODE;
+                const boro = zipData[zip];
+                const [centerX, centerY] = pathGenerator.centroid(d);
+                const zoomScale = 2;
+                const unfocus = focusedZip == zip;
+
+                const transformStr = unfocus
+                  ? 'translate(0,0)'
+                  : `translate(${width / 2},${
+                      height / 2
+                    })scale(${zoomScale})translate(${-centerX},${-centerY})`;
+
+                mapLayer
+                  .transition()
+                  .duration(750)
+                  .attr('transform', transformStr);
+
+                focusedBoro = unfocus ? null : boro;
+                focusedZip = unfocus ? null : zip;
+                drawHeatMap();
+                drawRatBubbles();
+              }
+
+              // RAT FUNCTIONS
+
+              function drawRatBubbles() {
+                //console.log("drawRatBubles change", year, typeof year);
+                const zipBubble = focusedBoro ? bubbleOpacity : 0;
+                const boroBubble = focusedBoro ? 0 : bubbleOpacity;
+                for (let i in Object.keys(features)) {
+                  f = features[i];
+                  const zip = f.properties.ZIPCODE;
+                  let radius = rat_zipcodes[Number(currentYear)][Number(zip)];
+                  if (radius == undefined) {
+                    radius = 0;
                   }
-                
-                  for (let centroid in borough_centroid) {
-                    mapLayer
-                      .select("#" + centroid.split(" ")[0])
-                      .style("opacity", boroBubble)
-                      .transition()
-                      .duration(700)
-                      .attr("r", rat_sightings_by_year[currentYear][centroid] / bubblesize);
-                  }
-                  
-                  
+
+                  mapLayer
+                    .select('#z' + zip)
+                    .style('opacity', zipBubble)
+                    .transition()
+                    .duration(700)
+                    .attr('r', radius / bubblesize);
                 }
 
-                let rat_sightings_by_year = {
-                  2010: {},
-                  2011: {},
-                  2012: {},
-                  2013: {},
-                  2014: {},
-                  2015: {},
-                  2016: {},
-                  2017: {},
+                for (let centroid in borough_centroid) {
+                  mapLayer
+                    .select('#' + centroid.split(' ')[0])
+                    .style('opacity', boroBubble)
+                    .transition()
+                    .duration(700)
+                    .attr(
+                      'r',
+                      rat_sightings_by_year[currentYear][centroid] / bubblesize
+                    );
+                }
+              }
+
+              let rat_sightings_by_year = {
+                2010: {},
+                2011: {},
+                2012: {},
+                2013: {},
+                2014: {},
+                2015: {},
+                2016: {},
+                2017: {},
+              };
+
+              d3.csv('Rat_Sightings.csv').then(function (data) {
+                data.forEach(function (data) {
+                  // zip code
+                  zip_code = data['Incident Zip'];
+                  year_key = '';
+                  for (let year in rat_sightings_by_year) {
+                    if (data['Created Date'].includes(year)) {
+                      year_key = year;
+                    }
+                  }
+                  borough_name = data['Borough'];
+                  if (borough_name in rat_sightings_by_year[year_key]) {
+                    rat_sightings_by_year[year_key][borough_name] =
+                      rat_sightings_by_year[year_key][borough_name] + 1;
+                  } else {
+                    rat_sightings_by_year[year_key][borough_name] = 1;
+                  }
+
+                  if (zip_code in rat_zipcodes[year_key]) {
+                    rat_zipcodes[year_key][zip_code] =
+                      rat_zipcodes[year_key][zip_code] + 1;
+                  } else {
+                    rat_zipcodes[year_key][zip_code] = 1;
+                  }
+                });
+
+                let curr_rat_sightings = rat_sightings_by_year[currentYear];
+
+                borough_centroid = {
+                  'STATEN ISLAND': [308.69135817244097, 405.01656413868227],
+                  BROOKLYN: [470.1010548370231, 338.883373664164],
+                  QUEENS: [571.6402480111927, 273.71251550545253],
+                  MANHATTAN: [454.9429237747376, 201.57378884897776],
+                  BRONX: [533.9865047423267, 123.38419034497619],
                 };
 
-                
+                for (let centroid in borough_centroid) {
+                  centroid_coords = borough_centroid[centroid];
+                  mapLayer
+                    .append('circle')
+                    .attr('id', centroid.split(' ')[0])
+                    .attr('cx', centroid_coords[0])
+                    .attr('cy', centroid_coords[1])
+                    .attr('r', curr_rat_sightings[centroid] / bubblesize)
+                    .style('fill', bubbleColor)
+                    .style('opacity', bubbleOpacity)
+                    .style('stroke', bubbleColor)
+                    .style('pointer-events', 'none');
+                }
 
-                d3.csv("Rat_Sightings.csv").then(function (data) {
-                  
+                for (let i in Object.keys(features)) {
+                  f = features[i];
 
+                  const [cX, cY] = pathGenerator.centroid(f);
+                  const zip = f.properties.ZIPCODE;
 
-                  //function colorZipCodesByBorough() {
-                    //mapLayer
-                      //.selectAll("path")
-                      //.transition()
-                      //.duration(700)
-                      //.style("fill", function (f) {
-                      //  const zipCode = f.properties.ZIPCODE;
-                      //  const boroughName = zipData[zipCode];
-                      //  return colorMap[boroughName];
-                      //});
-                  //}
-
-                  data.forEach(function (data) {
-                    // zip code
-                    zip_code = data["Incident Zip"];
-                    year_key = "";
-                    for (let year in rat_sightings_by_year) {
-                      if (data["Created Date"].includes(year)) {
-                        year_key = year;
-                      }
-                    }
-                    borough_name = data["Borough"];
-                    if (borough_name in rat_sightings_by_year[year_key]) {
-                      rat_sightings_by_year[year_key][borough_name] =
-                        rat_sightings_by_year[year_key][borough_name] + 1;
-                    } else {
-                      rat_sightings_by_year[year_key][borough_name] = 1;
-                    }
-
-                    if (zip_code in rat_zipcodes[year_key]) {
-                      rat_zipcodes[year_key][zip_code] =
-                        rat_zipcodes[year_key][zip_code] + 1;
-                    } else {
-                      rat_zipcodes[year_key][zip_code] = 1;
-                      
-                    }
-
-                  });
-                
-
-                  let curr_rat_sightings = rat_sightings_by_year[currentYear];
-
-                  borough_centroid = {
-                    "STATEN ISLAND": [308.69135817244097, 405.01656413868227],
-                    BROOKLYN: [470.1010548370231, 338.883373664164],
-                    QUEENS: [571.6402480111927, 273.71251550545253],
-                    MANHATTAN: [454.9429237747376, 201.57378884897776],
-                    BRONX: [533.9865047423267, 123.38419034497619],
-                  };
-
-                  for (let centroid in borough_centroid) {
-                    centroid_coords = borough_centroid[centroid];
-                    mapLayer
-                      .append("circle")
-                      .attr("id", centroid.split(" ")[0])
-                      .attr("cx", centroid_coords[0])
-                      .attr("cy", centroid_coords[1])
-                      .attr("r", curr_rat_sightings[centroid] / bubblesize)
-                      .style("fill", bubbleColor)
-                      .style("opacity", bubbleOpacity)
-                      .style("stroke", bubbleColor)
-                      .style("pointer-events", "none");
+                  let radius = rat_zipcodes[Number(currentYear)][Number(zip)];
+                  if (radius == undefined) {
+                    radius = 0;
                   }
+                  //console.log("r " + radius);
+                  mapLayer
+                    .append('circle')
+                    .attr('id', 'z' + zip)
+                    .attr('cx', cX)
+                    .attr('cy', cY)
+                    .attr('r', radius / bubblesize)
+                    .style('fill', bubbleColor)
+                    .style('opacity', 0)
+                    .style('stroke', bubbleColor)
+                    .style('pointer-events', 'none');
+                }
 
-                  for (let i in Object.keys(features)) {
-                    f = features[i];
-                    
-                    const [cX, cY] = pathGenerator.centroid(f);
-                    const zip = f.properties.ZIPCODE;
-
-                    let radius = rat_zipcodes[Number(currentYear)][Number(zip)];
-                    if (radius == undefined){
-                      radius = 0;
-                    }
-                    //console.log("r " + radius);
-                    mapLayer
-                      .append("circle")
-                      .attr("id", "z"+zip)
-                      .attr("cx", cX)
-                      .attr("cy", cY)
-                      .attr("r",  radius / bubblesize)
-                      .style("fill", bubbleColor)
-                      .style("opacity", 0)
-                      .style("stroke", bubbleColor)
-                      .style("pointer-events", "none");
-                  }
-
-                  
-
-                  const ratLegendGroup = svg
-                    .append("g")
-                    .classed("rat-legend", true)
-                    .attr(
-                      "transform",
-                      `translate(${(width * 4) / 5}, ${(height * 1) / 2})`
-                    );
+                const ratLegendGroup = svg
+                  .append('g')
+                  .classed('rat-legend', true)
+                  .attr(
+                    'transform',
+                    `translate(${(width * 4) / 5}, ${(height * 1) / 2})`
+                  );
 
                 legendRatsCounts = [5000, 2500, 1000, 500, 100];
-                const opacities = [.2, .25, .3, .35, 1]
+                const opacities = [0.2, 0.25, 0.3, 0.35, 1];
                 ratLegendGroup
-                  .selectAll("circle")
+                  .selectAll('circle')
                   .data(legendRatsCounts)
-                  .join("circle")
-                  .attr("cy", -5000 / bubblesize - 20)
-                  .attr("cx", 0)
-                  .attr("r", (ratCount) => {
+                  .join('circle')
+                  .attr('cy', -5000 / bubblesize - 20)
+                  .attr('cx', 0)
+                  .attr('r', (ratCount) => {
                     return ratCount / bubblesize;
                   })
-                  .style("fill", bubbleColor)
-                  .style("opacity", (ratCount, i) => opacities[i])
-                  .style("stroke", bubbleColor)
-                  .style("stroke-width", 1.8);
+                  .style('fill', bubbleColor)
+                  .style('opacity', (ratCount, i) => opacities[i])
+                  .style('stroke', bubbleColor)
+                  .style('stroke-width', 1.8);
 
                 ratLegendGroup
-                  .selectAll("text")
+                  .selectAll('text')
                   .data(legendRatsCounts.reverse())
-                  .join("text")
-                  .attr("y", (ratCount, i) => -(i*20+ 60)) 
-                  .attr("x", 20)
-                  .attr("r", 5)
+                  .join('text')
+                  .attr('y', (ratCount, i) => -(i * 20 + 60))
+                  .attr('x', 20)
+                  .attr('r', 5)
                   .text((v) => {
-                    return v + " rat sightings";
+                    return v + ' rat sightings';
                   })
-                  .style("font-family", font)
-                  .style("fill", textcolor);
+                  .style('font-family', font)
+                  .style('fill', textcolor);
 
-                  input.addEventListener("input", (event) => {
-                    currentYear = event.target.value;
-                    value.textContent = currentYear;
-                    drawHeatMap();
-                    drawRatBubbles();
-                  });
+                input.addEventListener('input', (event) => {
+                  currentYear = event.target.value;
+                  value.textContent = currentYear;
+                  drawHeatMap();
+                  drawRatBubbles();
                 });
-                
-
-
-
-
-              })
+              });
+            });
           })
           .catch(function (error) {
-            console.error("Error loading GeoJSON:", error);
+            console.error('Error loading GeoJSON:', error);
           });
       });
 
       function mouseover(d, path) {
         // Highlight hovered borough with orange
-        d3.select(path).style("fill", "rgba(255, 165, 0, 0.3)");
+        d3.select(path).style('fill', 'rgba(255, 165, 0, 0.3)');
         const zipCode = d.properties.ZIPCODE;
         const borough = zipData[zipCode];
-        let rats = rat_zipcodes[currentYear][zipCode]
-        if (rats == undefined) rats = 0
+        let rats = rat_zipcodes[currentYear][zipCode];
+        if (rats == undefined) rats = 0;
         boroughName
           .text(borough)
-          .attr("font-size", "42px")
-          .style("fill", textcolor)
-          .style("font-family", font);
+          .attr('font-size', '42px')
+          .style('fill', textcolor)
+          .style('font-family', font);
         populationText
-          .text("Human Population: " + d.properties.POPULATION)
-          .attr("font-size", "15px")
-          .style("fill", textcolor)
-          .style("font-family", font);
+          .text('Human Population: ' + d.properties.POPULATION)
+          .attr('font-size', '15px')
+          .style('fill', textcolor)
+          .style('font-family', font);
         ratText
-          .text("Rat Sightings: " + rats)
-          .attr("font-size", "15px")
-          .style("fill", textcolor)
-          .style("font-family", font);
+          .text('Rat Sightings: ' + rats)
+          .attr('font-size', '15px')
+          .style('fill', textcolor)
+          .style('font-family', font);
         //.log("zipcode is: ", zipCode)
       }
       function mouseout(d, path) {
-        const zip = d.properties.ZIPCODE
+        const zip = d.properties.ZIPCODE;
         const boro = zipData[zip];
         const color = colorMap[boro];
-        boroughName.text(focusedBoro ? focusedBoro : "");
-        populationText.text("");
-        ratText.text("");
+        boroughName.text(focusedBoro ? focusedBoro : '');
+        populationText.text('');
+        ratText.text('');
         //console.log(mouseout, "color");
 
-        d3.select(path).style("fill", focusedBoro ? colorZipMap[zip] : color); // Set fill back to the original borough color
+        d3.select(path).style('fill', focusedBoro ? colorZipMap[zip] : color); // Set fill back to the original borough color
       }
-
     });
 
-
-
-    var boroughName = g.append("text").attr("x", 20).attr("y", 45);
-    var populationText = g.append("text").attr("x", 20).attr("y", 70);
-    var ratText = g.append("text").attr("x", 20).attr("y", 90);
+    var boroughName = g.append('text').attr('x', 20).attr('y', 45);
+    var populationText = g.append('text').attr('x', 20).attr('y', 70);
+    var ratText = g.append('text').attr('x', 20).attr('y', 90);
 
     //MAP DRAWING END
   </script>
