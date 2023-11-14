@@ -232,6 +232,7 @@
     var svg = d3.select('svg').attr('width', width).attr('height', height);
     let focusedBoro = null;
     let focusedZip = null;
+    let allZipPriceData = null;
     let currentYear = startYear;
     var g = svg.append('g');
 
@@ -255,7 +256,7 @@
           .then(function (salesPriceData) {
             d3.json('average_prices_by_zip.json').then(function (zipPriceData) {
               const features = mapData.features;
-
+              allZipPriceData = zipPriceData
               const allPrices = Object.keys(salesPriceData)
                 .map((v) =>
                   Object.keys(salesPriceData[v]).map((k) =>
@@ -570,6 +571,11 @@
         const borough = zipData[zipCode];
         let rats = rat_zipcodes[currentYear][zipCode];
         if (rats == undefined) rats = 0;
+
+        const priceData = allZipPriceData ? allZipPriceData[borough][currentYear].find(
+                        (a) => a['Zip Code'] == zipCode) : undefined;
+        const price = priceData ? priceData['Sale Price'] : 0
+  
         boroughName
           .text(borough)
           .attr('font-size', '42px')
@@ -586,14 +592,21 @@
           .style('fill', textcolor)
           .style('font-family', font);
         //.log("zipcode is: ", zipCode)
+        priceText
+          .text(`Property Sales: ${d3.format("$,.0f")(price)}`)
+          .attr('font-size', '15px')
+          .style('fill', textcolor)
+          .style('font-family', font);
       }
       function mouseout(d, path) {
         const zip = d.properties.ZIPCODE;
         const boro = zipData[zip];
         const color = colorMap[boro];
-        boroughName.text(focusedBoro ? focusedBoro : '');
+        boroughName.text(focusedBoro || '');
         populationText.text('');
         ratText.text('');
+        priceText.text('');
+
         //console.log(mouseout, "color");
 
         d3.select(path).style('fill', focusedBoro ? colorZipMap[zip] : color); // Set fill back to the original borough color
@@ -603,6 +616,7 @@
     var boroughName = g.append('text').attr('x', 20).attr('y', 45);
     var populationText = g.append('text').attr('x', 20).attr('y', 70);
     var ratText = g.append('text').attr('x', 20).attr('y', 90);
+    var priceText = g.append('text').attr('x', 20).attr('y', 110);
 
     //MAP DRAWING END
   </script>
