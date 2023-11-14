@@ -253,9 +253,9 @@
       d3.json("zip_code.geojson").then(function (mapData) {
         //console.log("Map Data:", mapData);
 
-        d3.json("OLD_average_sale_prices.json")
+        d3.json("average_sale_prices.json")
           .then(function (salesPriceData) {
-            d3.json("sales datasets/average_prices_by_zip.json")
+            d3.json("average_prices_by_zip.json")
               .then(function (zipPriceData) {
                 const features = mapData.features;
 
