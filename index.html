@@ -30,6 +30,7 @@
     --bg-color: #e1e0fb;
     --slider-color: #817fc2;
     --text-color: #25226a;
+    --any-color: #706d96;
   }
 
   .map-layer {
@@ -37,12 +38,6 @@
     stroke: var(--bg-color);
   }
 
-  .heat-legend {
-    background-color: #817fc2;
-  }
-  .rat-legend {
-    background-color: #817fc2;
-  }
 
   #slider-container {
     width: 80%;
@@ -152,9 +147,14 @@
     <strong>Rat Sightings per Year</strong> for each NYC borough and zipcode.
   </p>
   <p>
-    <strong>Directions:</strong> Interact with the slider to adjust the year.
-    Click to zoom into a borough and navigate around the map. Double-click to
-    zoom back out to the city.
+    <strong>Directions:</strong> Interact with the slider at the bottom of the 
+    page to adjust the year. Click to zoom into a borough and navigate around 
+    the map. Double-click to zoom back out to the city.
+  </p>
+  <p>
+    The number of <strong>Rat Sightings</strong> are indicated by the size of bubbles.
+    The <strong>Average Property Sale</strong> is indicated by the map color. 
+    In October 2023, the median listing home price in NYC was $799,000.
   </p>
 
   <svg></svg>
@@ -190,11 +190,11 @@
   <script>
     //colors
     const bubbleColor = 'white';
-    const bubbleOpacity = 0.7;
+    const bubbleOpacity = 0.65;
     const font = 'Baskerville';
     const bgcolor = '#e1e0fb';
-    const darkcolor = '#817fc2';
     const textcolor = '#25226a';
+    const legendcolor = '#706d96';
 
     // YEAR SLIDER
     const startYear = 2017;
@@ -299,7 +299,8 @@
                 .attr('y', -300)
                 .attr('height', 330)
                 .attr('width', 220)
-                .style('fill', '#b5b4d6');
+                .style('opacity', .9)
+                .style('fill', legendcolor);
 
                 const legendText = [priceExtent[0]].concat(colorScale.quantiles())
                     .concat(9e6).map(i => Math.floor(i/1000)*1000);
@@ -325,7 +326,7 @@
                     `${d3.format("$,.0f")(legendText[i])} - 
                     ${d3.format("$,.0f")(v)}${i === legendText.length - 2 ?'+':''}`)
                   .style("font-family", font)
-                  .style("fill", textcolor);
+                  .style("fill", "white");
 
               drawHeatMap();
 
@@ -515,20 +516,19 @@
 
                 const ratLegendGroup = svg
                   .append('g')
-                  .classed('rat-legend', true)
                   .attr(
                     'transform',
                     `translate(${(width * 4) / 5}, ${(height * 1) / 2})`
                   );
 
                 legendRatsCounts = [5000, 2500, 1000, 500, 100];
-                const opacities = [0.2, 0.25, 0.3, 0.35, 1];
+                const opacities = [0.2, 0.25, 0.35, 0.45, 1];
                 ratLegendGroup
                   .selectAll('circle')
                   .data(legendRatsCounts)
                   .join('circle')
-                  .attr('cy', -5000 / bubblesize - 20)
-                  .attr('cx', 0)
+                  .attr('cy', (ratCount) => -(5000+ratCount) / bubblesize + 40)
+                  .attr('cx', 30)
                   .attr('r', (ratCount) => {
                     return ratCount / bubblesize;
                   })
@@ -541,14 +541,14 @@
                   .selectAll('text')
                   .data(legendRatsCounts.reverse())
                   .join('text')
-                  .attr('y', (ratCount, i) => -(i * 20 + 60))
-                  .attr('x', 20)
+                  .attr('y', (ratCount, i) => (i==0)? -18: -(5000+2*ratCount) / bubblesize + 38)
+                  .attr('x', (_, i) => (i==0)? 35 : (i==1)? 19 : 15)
                   .attr('r', 5)
-                  .text((v) => {
-                    return v + ' rat sightings';
+                  .text((v, i) => {
+                    return v ;
                   })
                   .style('font-family', font)
-                  .style('fill', textcolor);
+                  .style('fill', "white");
 
                 input.addEventListener('input', (event) => {
                   currentYear = event.target.value;
