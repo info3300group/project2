@@ -613,7 +613,13 @@
         d3.select(path).style('fill', focusedBoro ? colorZipMap[zip] : color); // Set fill back to the original borough color
       }
     });
-
+    g.append('rect')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('height', 130)
+      .attr('width', 260)
+      .style('opacity', .9)
+      .style('fill', bgcolor);
     var boroughName = g.append('text').attr('x', 20).attr('y', 45);
     var populationText = g.append('text').attr('x', 20).attr('y', 70);
     var ratText = g.append('text').attr('x', 20).attr('y', 90);
