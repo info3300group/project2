@@ -122,6 +122,10 @@
     margin-bottom: 5px;
     margin-top: 0px;
   }
+  
+  a {
+    color: darkblue;
+  }
 
   strong {
     font-weight: normal;
@@ -139,8 +143,10 @@
 </style>
 
 <body>
+  <p><a href="../projects.html">back</a></p>
   <h1>2010~2017 NYC Rat Sightings</h1>
   <h3>By Adeniyi Fagbewesa, Elise Song, Ka-Hyun Nam, and Morgan Suh</h3>
+  
   <p>
     This interactive visualization plots a cloropleth map of
     <strong>Average Property Sales per Year</strong>, as well as the number of
@@ -182,6 +188,12 @@
       <option value="2017" label="2017"></option>
     </datalist>
   </div>
+  <p>
+    Sources: <a href="https://www.kaggle.com/datasets/johnshuford/new-york-city-property-sales">Kaggle NYC Property Sales</a>, 
+    <a href="https://www.kaggle.com/datasets/new-york-city/nyc-rat-sightings">Kaggle NYC Rat Sightings</a>,
+    <a href="https://data.beta.nyc/en/dataset/nyc-zip-code-tabulation-areas/resource/894e9162-871c-4552-a09c-c6915d8783fb">GeoJSON</a>,
+    <a href="https://www.nycbynatives.com/nyc_info/new_york_city_zip_codes.php">NYC Zipcodes</a>
+  </p>
 
   <!-- <input id="slider-container" type="range" min="2010" max="2017" /> -->
   <!-- <div id="selected-year">Selected Year: <span id="year-value">2010</span></div> -->
